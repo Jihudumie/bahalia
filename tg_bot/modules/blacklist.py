@@ -37,7 +37,7 @@ def blacklist(bot: Bot, update: Update, args: List[str]):
     split_text = split_message(filter_list)
     for text in split_text:
         if text == BASE_BLACKLIST_STRING:
-            msg.reply_text("Blacklist ൽ പെടുത്തിയ സന്ദേശങ്ങളൊന്നും ഇവിടെയില്ല!!")
+            msg.reply_text("There are no blacklisted messages here!")
             return
         msg.reply_text(text, parse_mode=ParseMode.HTML)
 
@@ -63,7 +63,7 @@ def add_blacklist(bot: Bot, update: Update):
                 "Added <code>{}</code> triggers to the blacklist.".format(len(to_blacklist)), parse_mode=ParseMode.HTML)
 
     else:
-        msg.reply_text("Tell me which words you would like to remove from the blacklist.")
+        msg.reply_text("Tell me which words you would like to add to the blacklist.")
 
 
 @run_async
@@ -147,19 +147,19 @@ def __stats__():
 __mod_name__ = "Word Blacklists"
 
 __help__ = """
-ചില ട്രിഗറുകൾ ഒരു ഗ്രൂപ്പിൽ പറയുന്നത് തടയാൻ Blacklist ഉപയോഗിക്കുന്നു. ട്രിഗർ പരാമർശിക്കുമ്പോഴെല്ലാം, 
-സന്ദേശം ഉടനടി ഇല്ലാതാക്കപ്പെടും. മുന്നറിയിപ്പ് ഫിൽട്ടറുകളുമായി ഇത് ജോടിയാക്കുന്നതാണ് നല്ല കോംബോ!
+Blacklists are used to stop certain triggers from being said in a group. Any time the trigger is mentioned, \
+the message will immediately be deleted. A good combo is sometimes to pair this up with warn filters!
 
-*NOTE:*  ഗ്രൂപ്പ് അഡ്‌മിനുകളെ ബാധിക്കില്ല.
+*NOTE:* blacklists do not affect group admins.
 
- - /blacklist:  നിലവിലെ Blacklist പെടുത്തിയ വാക്കുകൾ കാണുക.
+ - /blacklist: View the current blacklisted words.
 
 *Admin only:*
- - /addblacklist <triggers>:  Blacklist ൽ ഒരു ട്രിഗർ ചേർക്കുക. ഓരോ വരിയും ഒരു ട്രിഗറായി കണക്കാക്കപ്പെടുന്നു, 
- അതിനാൽ വ്യത്യസ്ത ലൈനുകൾ ഉപയോഗിക്കുന്നത് ഒന്നിലധികം ട്രിഗറുകൾ ചേർക്കാൻ നിങ്ങളെ അനുവദിക്കും..
- - /unblacklist <triggers>: Blacklist ൽ നിന്ന് ട്രിഗറുകൾ നീക്കംചെയ്യുക. ഒരേ ന്യൂലൈൻ ലോജിക് ഇവിടെ ബാധകമാണ്, 
- അതിനാൽ നിങ്ങൾക്ക് ഒരേസമയം ഒന്നിലധികം ട്രിഗറുകൾ നീക്കംചെയ്യാം..
- - /rmblacklist <triggers>:  മുകളിൽ പറഞ്ഞതുപോലെ തന്നെ.
+ - /addblacklist <triggers>: Add a trigger to the blacklist. Each line is considered one trigger, so using different \
+lines will allow you to add multiple triggers.
+ - /unblacklist <triggers>: Remove triggers from the blacklist. Same newline logic applies here, so you can remove \
+multiple triggers at once.
+ - /rmblacklist <triggers>: Same as above.
 """
 
 BLACKLIST_HANDLER = DisableAbleCommandHandler("blacklist", blacklist, filters=Filters.group, pass_args=True,
@@ -167,7 +167,7 @@ BLACKLIST_HANDLER = DisableAbleCommandHandler("blacklist", blacklist, filters=Fi
 ADD_BLACKLIST_HANDLER = CommandHandler("addblacklist", add_blacklist, filters=Filters.group)
 UNBLACKLIST_HANDLER = CommandHandler(["unblacklist", "rmblacklist"], unblacklist, filters=Filters.group)
 BLACKLIST_DEL_HANDLER = MessageHandler(
-    (Filters.text | Filters.command | Filters.sticker | Filters.photo) & Filters.group, del_blacklist)
+    (Filters.text | Filters.command | Filters.sticker | Filters.photo) & Filters.group, del_blacklist, edited_updates=True)
 
 dispatcher.add_handler(BLACKLIST_HANDLER)
 dispatcher.add_handler(ADD_BLACKLIST_HANDLER)
