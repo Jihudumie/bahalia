@@ -254,10 +254,10 @@ def gmutestat(bot: Bot, update: Update, args: List[str]):
             update.effective_message.reply_text("I've disabled gmutes in this group. GMutes wont affect your users "
                                                 "anymore. You'll be less protected from Anirudh though!")
     else:
-        update.effective_message.reply_text("ഒരു ക്രമീകരണം തിരഞ്ഞെടുക്കാൻ എനിക്ക് കുറച്ച് ആർഗ്യുമെന്റുകൾ നൽകുക! on/off, yes/no!\n\n"
-                                            "നിങ്ങളുടെ നിലവിലെ ക്രമീകരണം ഇതാണ്: {}\n"
-                                            "ശരിയാണെങ്കിൽ, സംഭവിക്കുന്ന ഏത് gmutes ഉം നിങ്ങളുടെ ഗ്രൂപ്പിൽ സംഭവിക്കും. "
-                                            "തെറ്റാണെങ്കിൽ‌, അവർ‌ സമ്മതിക്കില്ല, സ്പാമർ‌മാരുടെ കാരുണ്യത്തിൽ‌ നിങ്ങളെ ഒഴിവാക്കും."
+        update.effective_message.reply_text("Nipe hoja chache kuchagua mpangilio! on/off, yes/no!\n\n"
+                                            "Huu ni mpangilio wako wa sasa: {}\n"
+                                            "Ikiwa ni kweli, chochote kinachotokea gmutes Na hiyo hufanyika katika kikundi chako. "
+                                            "Ikiwa ni makosa, hawatakubali na watakuokoa huruma ya spammers."
                                             "spammers.".format(sql.does_chat_gmute(update.effective_chat.id)))
 
 
@@ -289,14 +289,13 @@ def __chat_settings__(chat_id, user_id):
 
 __help__ = """
 *Admin only:*
- - /gmutestat <on/off/yes/no>: നിങ്ങളുടെ ഗ്രൂപ്പിലെ ഗ്ലോബൽ സൈലന്റ് സജീവമാക്കുക, അല്ലെങ്കിൽ നിങ്ങളുടെ നിലവിലെ ക്രമീകരണങ്ങൾ തിരികെ നൽകും.
+ - /gmutestat <on/off/yes/no>: Washa Kimya cha Global katika kikundi chako, au rudisha mipangilio yako ya sasa.
 
-എല്ലാ ഗ്രൂപ്പുകളിലുമുള്ള സ്പാമർമാരെ നിശബ്ദമാക്കാൻ ബോട്ട് ഉടമകൾ ഗ്ലോബൽ മ്യൂട്ട്സ് എന്നും അറിയപ്പെടുന്നു. സ്പാം വെള്ളപ്പൊക്കക്കാരെ എത്രയും വേഗം നീക്കംചെയ്ത് നിങ്ങളെയും നിങ്ങളുടെ ഗ്രൂപ്പുകളെയും പരിരക്ഷിക്കാൻ ഇത് സഹായിക്കുന്നു.
-/gmutestat വിളിച്ച് നിങ്ങളുടെ ഗ്രൂപ്പിനായി അവ പ്രവർത്തനരഹിതമാക്കാം...
-
+Wamiliki wa mashua pia wanajulikana kama Global Mutts kuwanyamazisha spammers katika vikundi vyote. Inasaidia kukulinda wewe na vikundi vyako kwa kuondoa mafuriko ya spam haraka iwezekanavyo.
+Unaweza kuwazima kwa kundi lako kwa kupiga /gmutestat ...
 """
 
-__mod_name__ = "Global Mutes"
+__mod_name__ = "Global Mutes 🔇"
 
 GMUTE_HANDLER = CommandHandler("gmute", gmute, pass_args=True,
                               filters=CustomFilters.sudo_filter | CustomFilters.support_filter)
