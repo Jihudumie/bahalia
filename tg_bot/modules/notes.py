@@ -16,8 +16,6 @@ from tg_bot.modules.helper_funcs.chat_status import user_admin
 from tg_bot.modules.helper_funcs.misc import build_keyboard, revert_buttons
 from tg_bot.modules.helper_funcs.msg_types import get_note_type
 
-from tg_bot.modules.connection import connected
-
 FILE_MATCHER = re.compile(r"^###file_id(!photo)?###:(.*?)(?:\s|$)")
 
 ENUM_FUNC_MAP = {
@@ -35,16 +33,6 @@ ENUM_FUNC_MAP = {
 # Do not async
 def get(bot, update, notename, show_none=True, no_format=False):
     chat_id = update.effective_chat.id
-    chat = update.effective_chat  # type: Optional[Chat]
-    user = update.effective_user  # type: Optional[User]
-    conn = connected(bot, update, chat, user.id, need_admin=False)
-    if not conn == False:
-        chat_id = conn
-        send_id = user.id
-    else:
-        chat_id = update.effective_chat.id
-        send_id = chat_id
-
     note = sql.get_note(chat_id, notename)
     message = update.effective_message  # type: Optional[Message]
 
@@ -83,25 +71,22 @@ def get(bot, update, notename, show_none=True, no_format=False):
             keyb = []
             parseMode = ParseMode.MARKDOWN
             buttons = sql.get_buttons(chat_id, notename)
-            should_preview_disabled = True
             if no_format:
                 parseMode = None
                 text += revert_buttons(buttons)
             else:
                 keyb = build_keyboard(buttons)
-                if "telegra.ph" in text or "youtu.be" in text:
-                    should_preview_disabled = False
 
             keyboard = InlineKeyboardMarkup(keyb)
 
             try:
                 if note.msgtype in (sql.Types.BUTTON_TEXT, sql.Types.TEXT):
                     bot.send_message(chat_id, text, reply_to_message_id=reply_id,
-                                     parse_mode=parseMode, disable_web_page_preview=should_preview_disabled,
+                                     parse_mode=parseMode, disable_web_page_preview=True,
                                      reply_markup=keyboard)
                 else:
                     ENUM_FUNC_MAP[note.msgtype](chat_id, note.file, caption=text, reply_to_message_id=reply_id,
-                                                parse_mode=parseMode, disable_web_page_preview=should_preview_disabled,
+                                                parse_mode=parseMode, disable_web_page_preview=True,
                                                 reply_markup=keyboard)
 
             except BadRequest as excp:
@@ -145,38 +130,29 @@ def hash_get(bot: Bot, update: Update):
 @run_async
 @user_admin
 def save(bot: Bot, update: Update):
-    chat = update.effective_chat  # type: Optional[Chat]
-    user = update.effective_user  # type: Optional[User]
-    conn = connected(bot, update, chat, user.id)
-    if not conn == False:
-        chat_id = conn
-        chat_name = dispatcher.bot.getChat(conn).title
-    else:
-        chat_id = update.effective_chat.id
-        if chat.type == "private":
-            chat_name = "local notes"
-        else:
-            chat_name = chat.title
-
+    chat_id = update.effective_chat.id
     msg = update.effective_message  # type: Optional[Message]
 
     note_name, text, data_type, content, buttons = get_note_type(msg)
 
     if data_type is None:
-        msg.reply_text("മച്ചാനെ,  ഇവിടെ നോട്ട് ഒന്നുമില്ല.")
+        msg.reply_text("Dude, there's no note")
         return
-
+    
     if len(text.strip()) == 0:
         text = note_name
-
+        
     sql.add_note_to_db(chat_id, note_name, text, data_type, buttons=buttons, file=content)
 
     msg.reply_text(
-        "OK, Added {note_name} in *{chat_name}*.\nGet it with /get {note_name}, or #{note_name}".format(note_name=note_name, chat_name=chat_name), parse_mode=ParseMode.MARKDOWN)
+        "Yas! Added {note_name}.\nGet it with /get {note_name}, or #{note_name}".format(note_name=note_name))
 
     if msg.reply_to_message and msg.reply_to_message.from_user.is_bot:
         if text:
-            msg.reply_text("ഒരു ബോട്ടിൽ നിന്നും ഒരു സന്ദേശം സേവ് ചെയ്യാൻ പറ്റുന്നതല്ല. വേറെ ഏതെങ്കിലും ഫോർവേഡ്,  അല്ലെങ്കിൽ റിപ്ലേ ആയി നൽകു")
+            msg.reply_text("Seems like you're trying to save a message from a bot. Unfortunately, "
+                           "bots can't forward bot messages, so I can't save the exact message. "
+                           "\nI'll save all the text I can, but if you want more, you'll have to "
+                           "forward the message yourself, and then save it.")
         else:
             msg.reply_text("Bots are kinda handicapped by telegram, making it hard for bots to "
                            "interact with other bots, so I can't save this message "
@@ -188,19 +164,7 @@ def save(bot: Bot, update: Update):
 @run_async
 @user_admin
 def clear(bot: Bot, update: Update, args: List[str]):
-    chat = update.effective_chat  # type: Optional[Chat]
-    user = update.effective_user  # type: Optional[User]
-    conn = connected(bot, update, chat, user.id)
-    if not conn == False:
-        chat_id = conn
-        chat_name = dispatcher.bot.getChat(conn).title
-    else:
-        chat_id = update.effective_chat.id
-        if chat.type == "private":
-            chat_name = "local notes"
-        else:
-            chat_name = chat.title
-
+    chat_id = update.effective_chat.id
     if len(args) >= 1:
         notename = args[0]
 
@@ -213,24 +177,9 @@ def clear(bot: Bot, update: Update, args: List[str]):
 @run_async
 def list_notes(bot: Bot, update: Update):
     chat_id = update.effective_chat.id
-    chat = update.effective_chat  # type: Optional[Chat]
-    user = update.effective_user  # type: Optional[User]
-    conn = connected(bot, update, chat, user.id, need_admin=False)
-    if not conn == False:
-        chat_id = conn
-        chat_name = dispatcher.bot.getChat(conn).title
-        msg = "*Notes in {}:*\n"
-    else:
-        chat_id = update.effective_chat.id
-        if chat.type == "private":
-            chat_name = ""
-            msg = "*Local Notes:*\n"
-        else:
-            chat_name = chat.title
-            msg = "*Notes in {}:*\n"
-
     note_list = sql.get_all_chat_notes(chat_id)
 
+    msg = "*Notes in chat:*\n"
     for note in note_list:
         note_name = escape_markdown(" - {}\n".format(note.name))
         if len(msg) + len(note_name) > MAX_MESSAGE_LENGTH:
@@ -281,19 +230,19 @@ def __chat_settings__(chat_id, user_id):
 
 
 __help__ = """
- - /get <notename>: ഈ നോട്ട്‌നെയിം ഉപയോഗിച്ച് കുറിപ്പ് നേടുക.
- - #<notename>: ഇതുപോലെ ചെയ്താലും സേവ് ചെയ്ത നോട്ട് കിട്ടും /get
- - /notes or /saved: ഈ ചാറ്റിൽ സേവ് ചെയ്ത എല്ലാ നോട്ടും ലിസ്റ്റ് ചെയ്യുന്നു.
+ - /get <notename>: get the note with this notename
+ - #<notename>: same as /get
+ - /notes or /saved: list all saved notes in this chat
 
-ഒരു ഫോർമാറ്റിംഗും കൂടാതെ ഒരു കുറിപ്പിലെ ഉള്ളടക്കങ്ങൾ വീണ്ടെടുക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുവെങ്കിൽ, use `/get <notename> noformat`. 
-നിലവിലെ കുറിപ്പ് അപ്‌ഡേറ്റുചെയ്യുമ്പോൾ ഇത് ഉപയോഗപ്രദമാകും..
+If you would like to retrieve the contents of a note without any formatting, use `/get <notename> noformat`. This can \
+be useful when updating a current note.
 
-*അഡ്‌മിൻ മാത്രം:*
+*Admin only:*
  - /save <notename> <notedata>: saves notedata as a note with name notename
 A button can be added to a note by using standard markdown link syntax - the link should just be prepended with a \
 `buttonurl:` section, as such: `[somelink](buttonurl:example.com)`. Check /markdownhelp for more info.
- - /save <notename>: മറുപടി നൽകിയ പേര് നെയിം നോട്ട് ആയി സേവ് ചെയ്യുക.
- - /clear <notename>: ഈ നെയിം ഇൽ ഉള്ള നോട്ട് ഡിലീറ്റ് ചെയ്യാം..
+ - /save <notename>: save the replied message as a note with name notename
+ - /clear <notename>: clear note with this name
 """
 
 __mod_name__ = "Notes"
