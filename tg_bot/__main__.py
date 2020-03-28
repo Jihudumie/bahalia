@@ -22,7 +22,8 @@ PM_START_TEXT = """
 Habari yako {}, Mimi ni {}! Kwa Maelezo Zaidi 👉 /help
 
 I'm a group manager bot maintained by [this wonderful person](tg://user?id={}). I'm built in python3, using the \
-python-telegram-bot library, and am fully [opensource](https://t.me/Huduma) - you can find what makes me tick!
+python-telegram-bot library, and am fully [opensource](https://t.me/huduma) - you can find what makes me tick \
+[here](github.com/aboyhasnooname/tgbot)!
 
 Karibu Katika group Letu, @Dw_swahili, 
 
