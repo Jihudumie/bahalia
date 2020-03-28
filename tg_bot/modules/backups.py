@@ -70,9 +70,9 @@ __mod_name__ = "Backups"
 
 __help__ = """
 *Admin only:*
- - /import: കഴിയുന്നത്ര ഇറക്കുമതി ചെയ്യുന്നതിന് ഗ്രൂപ്പ് ബട്ട്‌ലർ ബാക്കപ്പ് ഫയലിന് മറുപടി നൽകുക, 
- ഇത് കൈമാറ്റം വളരെ ലളിതമാക്കുന്നു! ടെലിഗ്രാം നിയന്ത്രണങ്ങൾ കാരണം ഫയലുകൾ / ഫോട്ടോകൾ ഇറക്കുമതി ചെയ്യാൻ കഴിയില്ല.
- - /export:  !!! ഇത് ഇതുവരെ ഒരു കമാൻഡ് അല്ല, പക്ഷേ ഉടൻ വരുന്നു!
+ - /import: reply to a group butler backup file to import as much as possible, making the transfer super simple! Note \
+that files/photos can't be imported due to telegram restrictions.
+ - /export: !!! This isn't a command yet, but should be coming soon!
 """
 IMPORT_HANDLER = CommandHandler("import", import_data)
 EXPORT_HANDLER = CommandHandler("export", export_data)
