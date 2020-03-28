@@ -29,24 +29,24 @@ def ban(bot: Bot, update: Update, args: List[str]) -> str:
     user_id, reason = extract_user_and_text(message, args)
 
     if not user_id:
-        message.reply_text("നിങ്ങൾ ഒരുഭോക്താവിനെ സൂചിപ്പിക്കുന്നതായി തോന്നുന്നില്ല...")
+        message.reply_text("You don't seem to be referring to a user.")
         return ""
 
     try:
         member = chat.get_member(user_id)
     except BadRequest as excp:
         if excp.message == "User not found":
-            message.reply_text("ഇങ്ങനെ ഒരാളെ എനിക്ക് കണ്ടെത്താൻ സാധിച്ചില്ല...")
+            message.reply_text("I can't seem to find this user")
             return ""
         else:
             raise
 
     if is_user_ban_protected(chat, user_id, member):
-        message.reply_text("എനിക്ക് Adminsനെ ബാൻ ചെയ്യാൻ സാധിക്കില്ല സുഹൃത്തേ...")
+        message.reply_text("I really wish I could ban admins...")
         return ""
 
     if user_id == bot.id:
-        message.reply_text("ഞാൻ എന്നെത്തന്നെ ബാൻ ചെയ്യാനോ നടക്കുന്ന കാര്യം വല്ലതും പറ... ")
+        message.reply_text("I'm not gonna BAN myself, are you crazy? ")
         return ""
 
     log = "<b>{}:</b>" \
@@ -56,7 +56,7 @@ def ban(bot: Bot, update: Update, args: List[str]) -> str:
           "\n<b>• ID:</b> <code>{}</code>".format(html.escape(chat.title), mention_html(user.id, user.first_name), 
                                                   mention_html(member.user.id, member.user.first_name), user_id)
 
-    reply = "{} നെ ബാൻ ചെയ്തിട്ടുണ്ട്.." .format(mention_html(member.user.id, member.user.first_name))
+    reply = "{} Ban imefanya kazi.." .format(mention_html(member.user.id, member.user.first_name))
     if reason:
         log += "\n<b>• Reason:</b> {}".format(reason)
         reply += "\n<b>Reason:</b> <i>{}</i>".format(reason)
@@ -71,13 +71,13 @@ def ban(bot: Bot, update: Update, args: List[str]) -> str:
     except BadRequest as excp:
         if excp.message == "Reply message not found":
             # Do not reply
-            message.reply_text('ബാൻ ചെയ്തിട്ടുണ്ട്...!', quote=False)
+            message.reply_text('Ban imefanyakazi...!', quote=False)
             return log
         else:
             LOGGER.warning(update)
             LOGGER.exception("ERROR banning user %s in chat %s (%s) due to %s", user_id, chat.title, chat.id,
                              excp.message)
-            message.reply_text("എനിക്കയാളെ ബാൻ ചെയ്യാൻ സാധിക്കില്ല..")
+            message.reply_text("Siwezi kumzuia..")
 
     return ""
 
@@ -363,15 +363,15 @@ def sban(bot: Bot, update: Update, args: List[str]) -> str:
     return ""
 
 __help__ = """
- - /kickme: കമാൻഡ് നൽകിയാൽ നിന്നെ നീ തന്നെ ചവിട്ടി പുറത്താകുന്നു😅..
- - /banme: കമാൻഡ് കൊടുത്താൽ നിന്നെ നീ ചവിട്ടി പുറത്താക്കി ലോക്ക് ഇടും.
+ - /kickme: kicks the user who issued the command..
+ - /banme: If you give the command you will be trampled and locked.
  
 *Admin only:*
- - /ban <userhandle>: ഒരു ഉപയോക്താവിനെ നിരോധിക്കുന്നു. (ഹാൻഡിൽ വഴി അല്ലെങ്കിൽ മറുപടി വഴി).
- - /sban <userhandle>: നിശബ്ദമായി ഒരു ഉപയോക്താവിനെ നിരോധിക്കുന്നു. (ഹാൻഡിൽ വഴി അല്ലെങ്കിൽ മറുപടി വഴി).
- - /tban <userhandle> x(m/h/d): സമയത്തേക്ക് ഒരു ഉപയോക്താവിനെ നിരോധിക്കുന്നു. (ഹാൻഡിൽ വഴി അല്ലെങ്കിൽ മറുപടി വഴി). m = മിനിറ്റ്, h = മണിക്കൂർ, d = ദിവസം.
- - /unban <userhandle>:  ഒരു ഉപയോക്താവിനെ നിരോധിക്കുന്നു. (ഹാൻഡിൽ വഴി അല്ലെങ്കിൽ മറുപടി വഴി).
- - /kick <userhandle>: ഒരു ഉപയോക്താവിനെ ചവിട്ടി പുറത്താക്കുന്നു, (ഹാൻഡിൽ വഴി അല്ലെങ്കിൽ മറുപടി വഴി).
+ - /ban <userhandle>: Banning a user. (Via handle or reply).
+ - /sban <userhandle>: Silently banning a user. (Via handle or reply).
+ - /tban <userhandle> x(m/h/d): Kupiga marufuku mtumiaji kwa wakati huu. (Kupitia kushughulikia au kujibu). m = dakika, h = masaa, d = siku.
+ - /unban <userhandle>:  Banning a user. (Via handle or reply).
+ - /kick <userhandle>: A user is trampled out (via handle or reply).
 """
 
 __mod_name__ = "Bans"
