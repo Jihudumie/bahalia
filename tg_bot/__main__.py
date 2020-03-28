@@ -19,13 +19,20 @@ from tg_bot.modules.helper_funcs.chat_status import is_user_admin
 from tg_bot.modules.helper_funcs.misc import paginate_modules
 
 PM_START_TEXT = """
-Habari {}, mimi ni Robot Jina langu ni {}! Kupata Menu gusa hapo 👉 /help - Na Karibu katika Group Letu la *DW Kiswahili* 👉 @Dw_swahili.
+Habari za Saahizi {}, Mimi ni *Robot* Jinalangu ni {}! If you have any questions on how to use me, read /help - Karibu Katika Group la
+*Dw Kiswahili group* @Dw_swahili.
 
 I'm a group manager bot maintained by [this wonderful person](tg://user?id={}). I'm built in python3, using the \
+python-telegram-bot library, and am fully [opensource](https://github.com/Jihudumie/bahalia) - you can find what makes me tick \
+[here](github.com/Jihudumie/bahalia)!
 
-support group, @Huduma, with any bugs, questions \
+Feel free to submit pull requests on github, or to contact my support group, @Huduma, with any bugs, questions \
 or feature requests you might have :)
-Karibu katika channel ya Habari, @DwKiswahiliHD Nasi tutakufikishia habari Kwa wakati.
+I also have a news channel, @DwKiswahiliHD for announcements on new features, downtime, etc.
+
+1. @seleleko
+2. @HabariTz
+3. MichezoTz
 
 You can find the list of available commands with /help.
 
