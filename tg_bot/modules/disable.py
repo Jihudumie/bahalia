@@ -149,12 +149,12 @@ if is_module_loaded(FILENAME):
     __mod_name__ = "Command disabling"
 
     __help__ = """
- - /cmds: Disabled ചെയ്ത കമാൻഡുകളുടെ നിലവിലെ നില പരിശോധിക്കുക.
+ - /cmds: check the current status of disabled commands
 
 *Admin only:*
- - /enable <cmd name>: ആ കമാൻഡ് പ്രാപ്തമാക്കുക.
- - /disable <cmd name>: ആ കമാൻഡ് അപ്രാപ്തമാക്കുക
- - /listcmds: Disable ചെയ്യാൻ കഴിയുന് കമാൻഡ് ലിസ്റ്റ്.
+ - /enable <cmd name>: enable that command
+ - /disable <cmd name>: disable that command
+ - /listcmds: list all possible toggleable commands
     """
 
     DISABLE_HANDLER = CommandHandler("disable", disable, pass_args=True, filters=Filters.group)
