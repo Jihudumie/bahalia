@@ -32,11 +32,11 @@ def allow_connections(bot: Bot, update: Update, args: List[str]) -> str:
                 sql.set_allow_connect_to_chat(chat.id, True)
                 update.effective_message.reply_text("Enabled connections to this chat for users")
             else:
-                update.effective_message.reply_text("ഗ്രൂപ്പിൽ /yes/off/no എന്ന് നൽകുക!")
+                update.effective_message.reply_text("Katika kikundi /yes/off/no Tafadhali ingiza!")
         else:
-            update.effective_message.reply_text("ഗ്രൂപ്പിൽ /yes/off/no എന്ന് നൽകുക!")
+            update.effective_message.reply_text("Katika kikundi /yes/off/no Tafadhali ingiza!")
     else:
-        update.effective_message.reply_text("ഗ്രൂപ്പിൽ /yes/off/no എന്ന് നൽകുക!")
+        update.effective_message.reply_text("Katika kikundi /yes/off/no Tafadhali ingiza!")
 
 
 @run_async
@@ -95,11 +95,11 @@ def connect_chat(bot, update, args):
                     keyboard(bot, update)
                     
                 else:
-                    update.effective_message.reply_text("കണക്ട് ചെയ്യാൻ സാധിച്ചില്ല!")
+                    update.effective_message.reply_text("Haiwezi kuunganishwa!")
             else:
-                update.effective_message.reply_text("ഈ ചാറ്റിലേക്കുള്ള കണക്ഷനുകൾ അനുവദനീയമല്ല!")
+                update.effective_message.reply_text("Hakuna muunganisho kwenye group hili unaruhusiwa!")
         else:
-            update.effective_message.reply_text("അളിയാ  ചാറ്റ് ഐഡി തന്നാലേ ഞാൻ കണക്ട്  ചെയ്യു 😌")
+            update.effective_message.reply_text("Nitaungana na Kitambulisho cha Mtu huyo 😌")
             history = sql.get_history(user.id)
             print(history.user_id, history.chat_id1, history.chat_id2, history.chat_id3, history.updated)
 
@@ -115,7 +115,7 @@ def disconnect_chat(bot, update):
             #Rebuild user's keyboard
             keyboard(bot, update)
         else:
-           update.effective_message.reply_text("വിച്ഛേദിക്കൽ പരാജയപ്പെട്ടു!")
+           update.effective_message.reply_text("Ugunduzi umeshindwa!")
     else:
         update.effective_message.reply_text("Usage restricted to PMs only")
 
@@ -145,10 +145,10 @@ def connected(bot, update, chat, user_id, need_admin=True):
 
 
 __help__ = """
-എന്നെ കണക്റ്റുചെയ്‌ത ഗ്രൂപ്പുകളിൽ  ഈ ഓപ്ഷൻസ് ലഭ്യമാണ്:
- • കുറിപ്പുകൾ കാണുക, എഡിറ്റുചെയ്യുക
- • ഫിൽട്ടറുകൾ കാണുക, എഡിറ്റുചെയ്യുക
- • ഭാവിയിൽ കൂടുതൽ വരുന്നതായിരിക്കും 😎
+The following options are available for groups connected to me:
+ • View and edit notes
+ • View and edit filters
+ • More to come in the future
 
  - /connect <chatid>: Connect to remote chat
  - /disconnect: Disconnect from chat
