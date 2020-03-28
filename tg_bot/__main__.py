@@ -19,19 +19,26 @@ from tg_bot.modules.helper_funcs.chat_status import is_user_admin
 from tg_bot.modules.helper_funcs.misc import paginate_modules
 
 PM_START_TEXT = """
-Habari yako {}, Mimi ni {}! Kwa Maelezo zaidi, Gusa hapa 👉 /help -  
-Mimi ni Bot Wa Mtu Binafsi 
-karibu Katika Group La Dw Kiswahili grop @Dw_swahili
+Habari yako {}, Mimi ni {}! Kwa Maelezo Zaidi 👉 /help
 
-pia karibu Katik Channel Yetu ya [Dw Kiswahili](https://t.me/DwKiswahiliHD)
+I'm a group manager bot maintained by [this wonderful person](tg://user?id={}). I'm built in python3, using the \
+python-telegram-bot library, and am fully [opensource](https://t.me/Huduma) - you can find what makes me tick!
+
+Karibu Katika group Letu, @Dw_swahili, 
+
+karibu Katika Channel Yetu [DW Kiswahili](https://t.me/DwKiswahiliHD) for announcements on new features, downtime, etc.
+
+You can find the list of available commands with /help.
+
+If you're enjoying using me, and/or would like to help me survive in the wild, hit /donate to help fund/upgrade my VPS!
 """
 
 HELP_STRINGS = """
 Habari yako! Jina langu ni *{}*.
-Mimi ni Robot Alhamdulillah nina uwezo Mkubwa wa kukusaidia 
-Kusimamia gunzo (group) au kikundi chako Hapa Telegram!
- Angalia yafuatayo 👇. \
-Ninayo weza kufanya ndani ya group lako.
+Mimi ni Robot Kazi Yangu ni Msimamizi Wa **DW Kiswahili Group**
+
+Yafuatayo 👇. \
+Ninayo weza kufanya ndani ya group letu au Lolote.
 
 *Amri* kuu za kuanzia Kutumia:
  - /start: start the bot
