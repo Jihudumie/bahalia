@@ -264,10 +264,10 @@ def gbanstat(bot: Bot, update: Update, args: List[str]):
                                                 "anymore. You'll be less protected from any trolls and spammers "
                                                 "though!")
     else:
-        update.effective_message.reply_text("ഒരു ക്രമീകരണം തിരഞ്ഞെടുക്കാൻ എനിക്ക് കുറച്ച് ആർഗ്യുമെന്റുകൾ നൽകുക! on/off, yes/no!\n\n"
-                                            "നിങ്ങളുടെ നിലവിലെ ക്രമീകരണം ഇതാണ്: {}\n"
-                                            "ശരിയാണെങ്കിൽ, സംഭവിക്കുന്ന ഏതൊരു gbans ഉം നിങ്ങളുടെ ഗ്രൂപ്പിൽ സംഭവിക്കും."
-                                            "തെറ്റാണെങ്കിൽ‌, അവർ‌ സമ്മതിക്കില്ല, സ്പാമർ‌മാരുടെ കാരുണ്യത്തിൽ‌ നിങ്ങളെ ഒഴിവാക്കും."
+        update.effective_message.reply_text("Nipe hoja chache kuchagua mpangilio! on/off, yes/no!\n\n"
+                                            "Huu ni mpangilio wako wa sasa: {}\n"
+                                            "Ikiwa ni kweli, chochote kinachotokea gbans Na hiyo hufanyika katika kikundi chako."
+                                            "Ikiwa ni makosa, hawatakubali na watakuokoa huruma ya spammers."
                                             "spammers.".format(sql.does_chat_gban(update.effective_chat.id)))
 
 
@@ -298,13 +298,13 @@ def __chat_settings__(chat_id, user_id):
 
 
 __help__ = """
-*അഡ്‌മിൻ മാത്രം:*
- - /gbanstat <on/off/yes/no>: നിങ്ങളുടെ ഗ്രൂപ്പിലെ ഗ്ലോബൽ ബാൻ സജീവമാക്കുകം, 
- അല്ലെങ്കിൽ നിങ്ങളുടെ നിലവിലെ ക്രമീകരണങ്ങൾ തിരികെ നൽകും.
+*Kiongozi Tu:*
+ - /gbanstat <on/off/yes/no>: Activate the Global Ban in your group,
+ Otherwise your current settings will be returned.
 
-Gbans, എല്ലാ ഗ്രൂപ്പുകളിലുമുള്ള സ്പാമർമാരെ നിരോധിക്കാൻ ബോട്ട് ഉടമകൾ ഗ്ലോബൽ ബാൻം എന്നും അറിയപ്പെടുന്ന ഗ്ബാൻസ് ഉപയോഗിക്കുന്നു. 
-സ്പാം വെള്ളപ്പൊക്കക്കാരെ എത്രയും വേഗം നീക്കംചെയ്ത് നിങ്ങളെയും നിങ്ങളുടെ ഗ്രൂപ്പുകളെയും പരിരക്ഷിക്കാൻ ഇത് സഹായിക്കുന്നു.
-/gbanstat വിളിച്ച് നിങ്ങളുടെ ഗ്രൂപ്പിനായി അവ പ്രവർത്തനരഹിതമാക്കാം \
+Gbans, Boat owners use Gbans, also known as Global Banm, to ban spammers in all groups.
+It helps protect you and your groups by removing spam flooders as soon as possible.
+/gbanstat You can disable them for your group by calling \
 
 """
 
