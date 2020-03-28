@@ -28,7 +28,7 @@ def promote(bot: Bot, update: Update, args: List[str]) -> str:
 
     user_id = extract_user(message, args)
     if not user_id:
-        message.reply_text("നിനക്ക് കണ്ണിനു വല്ല കുഴപ്പം ഉണ്ടോടെയ്😏😏... 🤷🏻‍♂.")
+        message.reply_text("You don't seem to be referring to a user.")
         return ""
 
     user_member = chat.get_member(user_id)
@@ -53,7 +53,7 @@ def promote(bot: Bot, update: Update, args: List[str]) -> str:
                           can_pin_messages=bot_member.can_pin_messages,
                           can_promote_members=bot_member.can_promote_members)
 
-    message.reply_text("സ്ഥാനക്കയറ്റം കൊടുത്തിട്ടുണ്ട്! 👍🏻")
+    message.reply_text("Successfully promoted!")
     return "<b>{}:</b>" \
            "\n#PROMOTED" \
            "\n<b>Admin:</b> {}" \
@@ -74,12 +74,12 @@ def demote(bot: Bot, update: Update, args: List[str]) -> str:
 
     user_id = extract_user(message, args)
     if not user_id:
-        message.reply_text("നിനക്ക് കണ്ണിനു വല്ല കുഴപ്പം ഉണ്ടോടെയ്😏😏....")
+        message.reply_text("You don't seem to be referring to a user.")
         return ""
 
     user_member = chat.get_member(user_id)
     if user_member.status == 'creator':
-        message.reply_text("അഡ മോനെ ഇതൊന്നും അത്ര നല്ലതല്ല കെട്ടോ🤒🤒🤒")
+        message.reply_text("This person CREATED the chat, how would I demote them?")
         return ""
 
     if not user_member.status == 'administrator':
@@ -193,21 +193,11 @@ def adminlist(bot: Bot, update: Update):
     text = "Admins in *{}*:".format(update.effective_chat.title or "this chat")
     for admin in administrators:
         user = admin.user
-        status = admin.status
-        name = "[{}](tg://user?id={})".format(user.first_name + " " + (user.last_name or ""), user.id)
+        name = "[{}](tg://user?id={})".format(user.first_name + (user.last_name or ""), user.id)
         if user.username:
-            name = "[{}](tg://user?id={})".format(user.first_name + (user.last_name or ""), user.id)
-        if status == "creator":
-            text += "\n 🔱 Creator:"
-            text += "\n` • `{} \n\n 🔰 Admin:".format(name)
-    for admin in administrators:
-        user = admin.user
-        status = admin.status
-        name = "[{}](tg://user?id={})".format(user.first_name + " " + (user.last_name or ""), user.id)
-        if user.username:
-            name = "[{}](tg://user?id={})".format(user.first_name + (user.last_name or ""), user.id)
-        if status == "administrator":
-            text += "\n` • `{}".format(name)
+            name = escape_markdown("@" + user.username)
+        text += "\n - {}".format(name)
+
     update.effective_message.reply_text(text, parse_mode=ParseMode.MARKDOWN)
 
 
@@ -217,14 +207,14 @@ def __chat_settings__(chat_id, user_id):
 
 
 __help__ = """
- - /adminlist: ചാറ്റിലെ അഡ്മിൻമാരുടെ പട്ടിക..
+ - /adminlist: list of admins in the chat
 
 *Admin only:*
- - /pin: ഉപയോക്താക്കൾക്ക് അറിയിപ്പുകൾ നൽകുന്നതിന് 'ഉച്ചത്തിൽ' അല്ലെങ്കിൽ 'അറിയിക്കുക' എന്നതിന് മറുപടി നൽകിയ സന്ദേശം നിശബ്ദമായി പിൻ ചെയ്യുന്നു.
- - /unpin: നിലവിൽ പിൻ ചെയ്ത സന്ദേശം അൺപിൻ ചെയ്യുന്നു
- - /invitelink: invitelink ലഭിക്കുന്നു
- - /promote: മറുപടി നൽകിയ ഉപയോക്താവിനെ പ്രോത്സാഹിപ്പിക്കുന്നു
- - /demote: ഉപയോക്താവ് മറുപടി നൽകിയ ഡെമോട്ട് ചെയ്യുന്നു
+ - /pin: silently pins the message replied to - add 'loud' or 'notify' to give notifs to users.
+ - /unpin: unpins the currently pinned message
+ - /invitelink: gets invitelink
+ - /promote: promotes the user replied to
+ - /demote: demotes the user replied to
 """
 
 __mod_name__ = "Admin"
