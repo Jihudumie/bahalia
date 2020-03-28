@@ -123,14 +123,14 @@ def __user_settings__(user_id):
 __mod_name__ = "Reporting"
 
 __help__ = """
- - /report <reason>: ഒരു സന്ദേശത്തിന് അഡ്‌മിനുകൾക്ക് റിപ്പോർട്ടുചെയ്യുന്നതിന് മറുപടി നൽകുക.
- - @admin: ഒരു സന്ദേശത്തിന് അഡ്‌മിനുകൾക്ക് റിപ്പോർട്ടുചെയ്യുന്നതിന് മറുപടി നൽകുക.
-NOTE: അഡ്‌മിനുകൾ ഉപയോഗിച്ചാൽ ഇവ രണ്ടും പ്രവർത്തനക്ഷമമാകില്ല
+ - /report <reason>: reply to a message to report it to admins.
+ - @admin: reply to a message to report it to admins.
+NOTE: neither of these will get triggered if used by admins
 
 *Admin only:*
- - /reports <on/off>: റിപ്പോർട്ട് ക്രമീകരണം മാറ്റുക, അല്ലെങ്കിൽ നിലവിലെ നില കാണുക.
-   - PM  ചെയ്താൽ, നിങ്ങളുടെ സ്റ്റാറ്റസ് ടോഗിൾ ചെയ്യുന്നു.
-   - ചാറ്റിലാണെങ്കിൽ, ആ ചാറ്റിന്റെ നില ടോഗിൾ ചെയ്യുന്നു.
+ - /reports <on/off>: change report setting, or view current status.
+   - If done in *PM*, toggles your status.
+   - If in chat, toggles that chat's status.
 """
 
 REPORT_HANDLER = CommandHandler("report", report, filters=Filters.group)
