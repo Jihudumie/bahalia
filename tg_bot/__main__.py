@@ -19,15 +19,15 @@ from tg_bot.modules.helper_funcs.chat_status import is_user_admin
 from tg_bot.modules.helper_funcs.misc import paginate_modules
 
 PM_START_TEXT = """
-Habari yako {}, Mimi ni {}! Kwa Maelezo Zaidi 👉 /help
+Habari yako {}, Mimi ni {}! Kupa Menu gusa hapo 👉 /help - Kwa msaada zaidi fika katika group Letu @Dw_swahili
 
 I'm a group manager bot maintained by [this wonderful person](tg://user?id={}). I'm built in python3, using the \
-python-telegram-bot library, and am fully [opensource](https://t.me/huduma) - you can find what makes me tick \
+python-telegram-bot library, and am fully [opensource](https://t.me/Dw_swahili) - you can find what makes me tick \
 [here](github.com/aboyhasnooname/tgbot)!
 
-Karibu Katika group Letu, @Dw_swahili, 
-
-karibu Katika Channel Yetu [DW Kiswahili](https://t.me/DwKiswahiliHD) for announcements on new features, downtime, etc.
+Feel free to submit pull requests on github, or to contact my support group, @Dw_swahili, with any bugs, questions \
+or feature requests you might have :)
+I also have a news channel, [Dw Kiswahili](https://t.me/dwkiswahilihd) for announcements on new features, downtime, etc.
 
 You can find the list of available commands with /help.
 
@@ -36,7 +36,7 @@ If you're enjoying using me, and/or would like to help me survive in the wild, h
 
 HELP_STRINGS = """
 Habari yako! Jina langu ni *{}*.
-Mimi ni Robot Kazi Yangu ni Msimamizi Wa **DW Kiswahili Group**
+Mimi ni Robot Kazi Yangu ni Msimamizi Wa <b>DW Kiswahili Group</b>
 
 Yafuatayo 👇. \
 Ninayo weza kufanya ndani ya group letu au Lolote.
