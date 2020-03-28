@@ -9,7 +9,7 @@ from telegram.utils.helpers import mention_markdown, mention_html, escape_markdo
 
 import tg_bot.modules.sql.welcome_sql as sql
 from tg_bot import dispatcher, OWNER_ID, LOGGER
-from tg_bot.modules.helper_funcs.chat_status import user_admin, can_delete
+from tg_bot.modules.helper_funcs.chat_status import user_admin
 from tg_bot.modules.helper_funcs.misc import build_keyboard, revert_buttons
 from tg_bot.modules.helper_funcs.msg_types import get_welcome_type
 from tg_bot.modules.helper_funcs.string_handling import markdown_parser, \
@@ -77,52 +77,6 @@ def send(update, message, keyboard, backup_message):
 
 
 @run_async
-@user_admin
-@loggable
-def del_joined(bot: Bot, update: Update, args: List[str]) -> str:
-    chat = update.effective_chat  # type: Optional[Chat]
-    user = update.effective_user  # type: Optional[User]
-
-    if not args:
-        del_pref = sql.get_del_pref(chat.id)
-        if del_pref:
-            update.effective_message.reply_text("*Member* ജോയിൻ ആകുമ്പോൾ ഉള്ള മെസ്സേജ് ഡിലീറ്റ് ചെയ്യാം...")
-        else:
-            update.effective_message.reply_text("Join ആയ മെസ്സേജ് ഞാൻ ഡിലീറ്റ് ആക്കില്ല!")
-        return ""
-
-    if args[0].lower() in ("on", "yes"):
-        sql.set_del_joined(str(chat.id), True)
-        update.effective_message.reply_text("Join ആയ മെസ്സേജ് ഞാൻ ഡിലീറ്റ് ചെയ്യാം!")
-        return "<b>{}:</b>" \
-               "\n#CLEAN_SERVICE_MESSAGE" \
-               "\n<b>Admin:</b> {}" \
-               "\nHas toggled join deletion to <code>ON</code>.".format(html.escape(chat.title),
-                                                                         mention_html(user.id, user.first_name))
-    elif args[0].lower() in ("off", "no"):
-        sql.set_del_joined(str(chat.id), False)
-        update.effective_message.reply_text("Join ആയ മെസ്സേജ് ഞാൻ ഡിലീറ്റ് ആക്കില്ല.")
-        return "<b>{}:</b>" \
-               "\n#CLEAN_SERVICE_MESSAGE" \
-               "\n<b>Admin:</b> {}" \
-               "\nHas toggled joined deletion to <code>OFF</code>.".format(html.escape(chat.title),
-                                                                          mention_html(user.id, user.first_name))
-    else:
-        # idek what you're writing, say yes or no
-        update.effective_message.reply_text("ഇതിൽ ഏതെങ്കിലും അടയാളപ്പെടുത്തുക 'on/yes' or 'off/no'!")
-        return ""
-
-
-@run_async
-def delete_join(bot: Bot, update: Update):
-    chat = update.effective_chat  # type: Optional[Chat]
-    join = update.effective_message.new_chat_members
-    if can_delete(chat, bot.id):
-        del_join = sql.get_del_pref(chat.id)
-        if del_join:
-            update.message.delete()
-
-@run_async
 def new_member(bot: Bot, update: Update):
     chat = update.effective_chat  # type: Optional[Chat]
 
@@ -154,7 +108,7 @@ def new_member(bot: Bot, update: Update):
                     else:
                         fullname = first_name
                     count = chat.get_members_count()
-                    mention = mention_markdown(new_mem.id, escape_markdown(first_name))
+                    mention = mention_markdown(new_mem.id, first_name)
                     if new_mem.username:
                         username = "@" + escape_markdown(new_mem.username)
                     else:
@@ -175,7 +129,6 @@ def new_member(bot: Bot, update: Update):
 
                 sent = send(update, res, keyboard,
                             sql.DEFAULT_WELCOME.format(first=first_name))  # type: Optional[Message]
-            delete_join(bot, update)
 
         prev_welc = sql.get_clean_pref(chat.id)
         if prev_welc:
@@ -237,7 +190,6 @@ def left_member(bot: Bot, update: Update):
             keyboard = InlineKeyboardMarkup(keyb)
 
             send(update, res, keyboard, sql.DEFAULT_GOODBYE)
-            delete_join(bot, update)
 
 
 @run_async
@@ -347,7 +299,7 @@ def set_welcome(bot: Bot, update: Update) -> str:
         return ""
 
     sql.set_custom_welcome(chat.id, content or text, data_type, buttons)
-    msg.reply_text("Welcome message സെറ്റ് ചെയ്‌തിട്ടുണ്ട്‌! 🤩")
+    msg.reply_text("Successfully set custom welcome message!")
 
     return "<b>{}:</b>" \
            "\n#SET_WELCOME" \
@@ -425,7 +377,7 @@ def clean_welcome(bot: Bot, update: Update, args: List[str]) -> str:
 
     if args[0].lower() in ("on", "yes"):
         sql.set_clean_welcome(str(chat.id), True)
-        update.effective_message.reply_text("OK, അപ്പൊ പഴയ welcome message ഒക്കെ ഡിലീറ്റ് ചെയ്യാൻ ശ്രമിക്കാം! 👍")
+        update.effective_message.reply_text("I'll try to delete old welcome messages!")
         return "<b>{}:</b>" \
                "\n#CLEAN_WELCOME" \
                "\n<b>Admin:</b> {}" \
@@ -445,20 +397,24 @@ def clean_welcome(bot: Bot, update: Update, args: List[str]) -> str:
         return ""
 
 
-WELC_HELP_TXT = "നിങ്ങളുടെ ഗ്രൂപ്പിന്റെ സ്വാഗത / വിട സന്ദേശങ്ങൾ‌ ഒന്നിലധികം രീതികളിൽ‌ വ്യക്തിഗതമാക്കാൻ‌ കഴിയും."\
-                " സ്ഥിരസ്ഥിതി സ്വാഗത സന്ദേശം പോലെ സന്ദേശങ്ങൾ വ്യക്തിഗതമായി സൃഷ്ടിക്കണമെങ്കിൽ, നിങ്ങൾക്ക് ഈ *വേരിയബിളുകൾ* ഉപയോഗിക്കാം:"\
-                " - `{{first}}`:  ഇത് ഉപയോക്താവിന്റെ ആദ്യ നാമത്തെ പ്രതിനിധീകരിക്കുന്നു\n" \
-                " - `{{last}}`:  ഇത് ഉപയോക്താവിന്റെ അവസാന പേരിനെ പ്രതിനിധീകരിക്കുന്നു.\n" \
-                " - `{{fullname}}`: ഇത് ഉപയോക്താവിന്റെ പൂർണ്ണ നാമത്തെ പ്രതിനിധീകരിക്കുന്നു.\n" \
-                " - `{{username}}`:  ഇത് ഉപയോക്താവിന്റെ Username പ്രതിനിധീകരിക്കുന്നു.\n" \
+WELC_HELP_TXT = "Your group's welcome/goodbye messages can be personalised in multiple ways. If you want the messages" \
+                " to be individually generated, like the default welcome message is, you can use *these* variables:\n" \
+                " - `{{first}}`: this represents the user's *first* name\n" \
+                " - `{{last}}`: this represents the user's *last* name. Defaults to *first name* if user has no " \
+                "last name.\n" \
+                " - `{{fullname}}`: this represents the user's *full* name. Defaults to *first name* if user has no " \
+                "last name.\n" \
+                " - `{{username}}`: this represents the user's *username*. Defaults to a *mention* of the user's " \
+                "first name if has no username.\n" \
                 " - `{{mention}}`: this simply *mentions* a user - tagging them with their first name.\n" \
-                " - `{{id}}`: ഇത് ഉപയോക്താവിന്റെ ഐഡിയെ പ്രതിനിധീകരിക്കുന്നു\n" \
-                " - `{{count}}`: ഇത് ഉപയോക്താവിന്റെ അംഗ നമ്പറിനെ പ്രതിനിധീകരിക്കുന്നു..\n" \
-                " - `{{chatname}}`:  ഇത് നിലവിലെ ചാറ്റ് നാമത്തെ പ്രതിനിധീകരിക്കുന്നു..\n" \
-                "\nഓരോ വേരിയബിളും മാറ്റിസ്ഥാപിക്കുന്നതിന് `{{}}` to be replaced.\n" \
-                "സ്വാഗത സന്ദേശങ്ങളും markdown ണിനെ പിന്തുണയ്ക്കുന്നു, അതിനാൽ നിങ്ങൾക്ക് ഏത് ഘടകങ്ങളും ബോൾഡ് / ഇറ്റാലിക് / കോഡ് / ലിങ്കുകൾ ആക്കാം. " \
-                "ബട്ടണുകളും പിന്തുണയ്‌ക്കുന്നു, അതിനാൽ ചില നല്ല ആമുഖ ബട്ടണുകൾ ഉപയോഗിച്ച് നിങ്ങളുടെ സ്വാഗതം ആകർഷകമാക്കും.\n" \
-                "നിങ്ങളുടെ നിയമങ്ങളുമായി ലിങ്കുചെയ്യുന്ന ഒരു ബട്ടൺ സൃഷ്ടിക്കുന്നതിന്, ഇത് ഉപയോഗിക്കുക: `[Rules](buttonurl://t.me/{}?start=group_id)`. " \
+                " - `{{id}}`: this represents the user's *id*\n" \
+                " - `{{count}}`: this represents the user's *member number*.\n" \
+                " - `{{chatname}}`: this represents the *current chat name*.\n" \
+                "\nEach variable MUST be surrounded by `{{}}` to be replaced.\n" \
+                "Welcome messages also support markdown, so you can make any elements bold/italic/code/links. " \
+                "Buttons are also supported, so you can make your welcomes look awesome with some nice intro " \
+                "buttons.\n" \
+                "To create a button linking to your rules, use this: `[Rules](buttonurl://t.me/{}?start=group_id)`. " \
                 "Simply replace `group_id` with your group's id, which can be obtained via /id, and you're good to " \
                 "go. Note that group ids are usually preceded by a `-` sign; this is required, so please don't " \
                 "remove it.\n" \
@@ -499,18 +455,17 @@ __help__ = """
 {}
 
 *Admin only:*
- - /welcome <on/off>:  Welcome സന്ദേശങ്ങൾ പ്രാപ്തമാക്കുക / അപ്രാപ്തമാക്കുക.
- - /welcome: നിലവിലെ Welcome ക്രമീകരണങ്ങൾ കാണിക്കുന്നു.
- - /welcome noformat: ഫോർമാറ്റിംഗ് ഇല്ലാതെ നിലവിലെ Welcome ക്രമീകരണങ്ങൾ കാണിക്കുന്നു - നിങ്ങളുടെ സ്വാഗത സന്ദേശങ്ങൾ Recycle ചെയ്യാൻ ഉപയോഗപ്രദമാണ്!!
- - /goodbye -> അതേ ഉപയോഗം കൂടാതെ / സ്വാഗതം.
- - /setwelcome <sometext>: ഒരു ഇച്ഛാനുസൃത സ്വാഗത സന്ദേശം സജ്ജമാക്കുക. മീഡിയയ്ക്ക് മറുപടി നൽകുന്നത് ഉപയോഗിക്കുകയാണെങ്കിൽ, ആ മീഡിയ ഉപയോഗിക്കുന്നു.
- - /setgoodbye <sometext>:  ഒരു ഇച്ഛാനുസൃത വിട സന്ദേശം സജ്ജമാക്കുക. മീഡിയയ്ക്ക് മറുപടി നൽകുന്നത് ഉപയോഗിക്കുകയാണെങ്കിൽ, ആ മീഡിയ ഉപയോഗിക്കുന്നു...
- - /resetwelcome: Default ആയിട്ടുള്ള സ്വാഗത സന്ദേശത്തിലേക്ക് തിരിച്ചു പോവുക...
- - /resetgoodbye: Default ആയിട്ടുള്ള Good Bye സന്ദേശത്തിലേക്ക് തിരിച്ചു പോവുക
- - /clearjoin <on/off>: *Member* ജോയിൻ ആകുമ്പോൾ ഉള്ള മെസ്സേജ് ഡിലീറ്റ് ചെയ്യാം..
- - /cleanwelcome <on/off>: On പുതിയ അംഗത്തിൽ, ചാറ്റ് സ്പാം ചെയ്യുന്നത് ഒഴിവാക്കാൻ മുമ്പത്തെ സ്വാഗത സന്ദേശം ഇല്ലാതാക്കാൻ ശ്രമിക്കുക.
+ - /welcome <on/off>: enable/disable welcome messages.
+ - /welcome: shows current welcome settings.
+ - /welcome noformat: shows current welcome settings, without the formatting - useful to recycle your welcome messages!
+ - /goodbye -> same usage and args as /welcome.
+ - /setwelcome <sometext>: set a custom welcome message. If used replying to media, uses that media.
+ - /setgoodbye <sometext>: set a custom goodbye message. If used replying to media, uses that media.
+ - /resetwelcome: reset to the default welcome message.
+ - /resetgoodbye: reset to the default goodbye message.
+ - /cleanwelcome <on/off>: On new member, try to delete the previous welcome message to avoid spamming the chat.
 
- - /welcomehelp: ഇഷ്‌ടാനുസൃത സ്വാഗത / വിട സന്ദേശങ്ങൾക്കായി കൂടുതൽ ഫോർമാറ്റിംഗ് വിവരങ്ങൾ കാണുക.
+ - /welcomehelp: view more formatting information for custom welcome/goodbye messages.
 """.format(WELC_HELP_TXT)
 
 __mod_name__ = "Welcomes/Goodbyes"
@@ -524,9 +479,7 @@ SET_GOODBYE = CommandHandler("setgoodbye", set_goodbye, filters=Filters.group)
 RESET_WELCOME = CommandHandler("resetwelcome", reset_welcome, filters=Filters.group)
 RESET_GOODBYE = CommandHandler("resetgoodbye", reset_goodbye, filters=Filters.group)
 CLEAN_WELCOME = CommandHandler("cleanwelcome", clean_welcome, pass_args=True, filters=Filters.group)
-DEL_JOINED = CommandHandler("clearjoin", del_joined, pass_args=True, filters=Filters.group)
 WELCOME_HELP = CommandHandler("welcomehelp", welcome_help)
-
 
 dispatcher.add_handler(NEW_MEM_HANDLER)
 dispatcher.add_handler(LEFT_MEM_HANDLER)
@@ -537,5 +490,4 @@ dispatcher.add_handler(SET_GOODBYE)
 dispatcher.add_handler(RESET_WELCOME)
 dispatcher.add_handler(RESET_GOODBYE)
 dispatcher.add_handler(CLEAN_WELCOME)
-dispatcher.add_handler(DEL_JOINED)
 dispatcher.add_handler(WELCOME_HELP)
