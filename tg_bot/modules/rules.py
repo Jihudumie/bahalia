@@ -38,7 +38,7 @@ def send_rules(update, chat_id, from_pm=False):
     if from_pm and rules:
         bot.send_message(user.id, text, parse_mode=ParseMode.MARKDOWN)
     elif from_pm:
-        bot.send_message(user.id, "ഗ്രൂപ്പ് അഡ്മിനുകൾ ഈ ചാറ്റിനായി ഇതുവരെ നിയമങ്ങളൊന്നും സജ്ജമാക്കിയിട്ടില്ല.. "
+        bot.send_message(user.id, "The group admins haven't set any rules for this chat yet. "
                                   "This probably doesn't mean it's lawless though...!")
     elif rules:
         update.effective_message.reply_text("Contact me in PM to get this group's rules.",
@@ -47,7 +47,7 @@ def send_rules(update, chat_id, from_pm=False):
                                                                        url="t.me/{}?start={}".format(bot.username,
                                                                                                      chat_id))]]))
     else:
-        update.effective_message.reply_text("ഗ്രൂപ്പ് അഡ്മിനുകൾ ഈ ചാറ്റിനായി ഇതുവരെ നിയമങ്ങളൊന്നും സജ്ജമാക്കിയിട്ടില്ല.. "
+        update.effective_message.reply_text("The group admins haven't set any rules for this chat yet. "
                                             "This probably doesn't mean it's lawless though...!")
 
 
@@ -64,7 +64,7 @@ def set_rules(bot: Bot, update: Update):
         markdown_rules = markdown_parser(txt, entities=msg.parse_entities(), offset=offset)
 
         sql.set_rules(chat_id, markdown_rules)
-        update.effective_message.reply_text("ഗ്രൂപ്പ് നിയമം *Set* ആക്കിയിരിക്കുന്നു.")
+        update.effective_message.reply_text("Successfully set rules for this group.")
 
 
 @run_async
@@ -72,7 +72,7 @@ def set_rules(bot: Bot, update: Update):
 def clear_rules(bot: Bot, update: Update):
     chat_id = update.effective_chat.id
     sql.set_rules(chat_id, "")
-    update.effective_message.reply_text("ഗ്രൂപ്പ് നിയമം *Clear* ആക്കിയിരിക്കുന്നു.")
+    update.effective_message.reply_text("Successfully cleared rules!")
 
 
 def __stats__():
@@ -94,11 +94,11 @@ def __chat_settings__(chat_id, user_id):
 
 
 __help__ = """
- - /rules: ഈ ചാറ്റിനായുള്ള നിയമങ്ങൾ നേടുക.
+ - /rules: get the rules for this chat.
 
 *Admin only:*
- - /setrules <your rules here>:  ഈ ചാറ്റിനായി നിയമങ്ങൾ സജ്ജമാക്കുക.
- - /clearrules: ഈ ചാറ്റിനായുള്ള നിയമങ്ങൾ‌ മായ്‌ക്കുക.
+ - /setrules <your rules here>: set the rules for this chat.
+ - /clearrules: clear the rules for this chat.
 """
 
 __mod_name__ = "Rules"
