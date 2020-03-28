@@ -82,13 +82,16 @@ def del_message(bot: Bot, update: Update) -> str:
 
 
 __help__ = """
-*അഡ്‌മിൻ മാത്രം:*
- - /del: നിങ്ങൾ മറുപടി നൽകിയ സന്ദേശം ഇല്ലാതാക്കുന്നു
- - /purge: ഇതിനും സന്ദേശത്തിന് മറുപടി നൽകിയതും തമ്മിലുള്ള എല്ലാ സന്ദേശങ്ങളും ഇല്ലാതാക്കുന്നു.
- - /purge <integer X>: മറുപടി നൽകിയ സന്ദേശവും അത് പിന്തുടരുന്ന X സന്ദേശങ്ങളും ഇല്ലാതാക്കുന്നു.
+*Viongozi tu:*
+Sehemu hii inahusu kufuta ujumbe ndani ya gumzo au group
+Command zote hizi 👇zinafuta
+
+ - /del: Reply Ujumbe video file au chocho na kitafutwa
+ - /purge: Command hii inafuta ujumbe unao fanana.
+ - /purge <integer X>: Inashughulikia ujumbe uliojibiwa na ujumbe wa X unaofuata.
 """
 
-__mod_name__ = "Purges"
+__mod_name__ = "Purges 🗑"
 
 DELETE_HANDLER = CommandHandler("del", del_message, filters=Filters.group)
 PURGE_HANDLER = CommandHandler("purge", purge, filters=Filters.group, pass_args=True)
