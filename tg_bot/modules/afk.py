@@ -22,7 +22,7 @@ def afk(bot: Bot, update: Update):
         reason = ""
 
     sql.set_afk(update.effective_user.id, reason)
-    update.effective_message.reply_text("{} ഇപ്പോൾ കീബോർഡിൽ നിന്നും അകലെ ആണ് ! ".format(update.effective_user.first_name))
+    update.effective_message.reply_text("{} is now AFK!".format(update.effective_user.first_name))
 
 
 @run_async
@@ -34,14 +34,14 @@ def no_longer_afk(bot: Bot, update: Update):
 
     res = sql.rm_afk(user.id)
     if res:
-        update.effective_message.reply_text("{} ഇപ്പോൾ കീബോർഡിൽ തിരിച്ചു വന്നു !".format(update.effective_user.first_name))
+        update.effective_message.reply_text("{} is no longer AFK!".format(update.effective_user.first_name))
 
 
 @run_async
 def reply_afk(bot: Bot, update: Update):
     message = update.effective_message  # type: Optional[Message]
-    if message.entities and message.parse_entities([MessageEntity.TEXT_MENTION, MessageEntity.MENTION]):
-        entities = message.parse_entities([MessageEntity.TEXT_MENTION, MessageEntity.MENTION])
+    entities = message.parse_entities([MessageEntity.TEXT_MENTION, MessageEntity.MENTION])
+    if message.entities and entities:
         for ent in entities:
             if ent.type == MessageEntity.TEXT_MENTION:
                 user_id = ent.user.id
@@ -59,22 +59,27 @@ def reply_afk(bot: Bot, update: Update):
                 return
 
             if sql.is_afk(user_id):
-                user = sql.check_afk_status(user_id)
-                if not user.reason:
-                    res = "{} ഇപ്പോൾ കീബോർഡിൽ നിന്നും അകലെ ആണ് ! കാരണം :\n{} ".format(fst_name)
-                else:
-                    res = "{} ഇപ്പോൾ കീബോർഡിൽ നിന്നും അകലെ ആണ് ! കാരണം :\n{}. ".format(fst_name, user.reason)
-                message.reply_text(res)
+                valid, reason = sql.check_afk_status(user_id)
+                if valid:
+                    if not reason:
+                        res = "{} is AFK!".format(fst_name)
+                    else:
+                        res = "{} is AFK! says its because of:\n{}".format(fst_name, reason)
+                    message.reply_text(res)
+
+
+def __gdpr__(user_id):
+    sql.rm_afk(user_id)
 
 
 __help__ = """
- - /afk <reason>: അളിയൻ ഇവിടെ ഇല്ലെന്ന് എല്ലാരും അറിയട്ടേ.
- - brb <reason>: afk കമാൻഡിന് സമാനമാണ് - പക്ഷേ ഒരു കമാൻഡ് അല്ല..
+ - /afk <reason>: mark yourself as AFK.
+ - brb <reason>: same as the afk command - but not a command.
 
-AFK എന്ന് അടയാളപ്പെടുത്തുമ്പോൾ, നിങ്ങൾ ലഭ്യമല്ലെന്ന് പറയാൻ ഏതെങ്കിലും പരാമർശങ്ങൾക്ക് ഒരു സന്ദേശമുപയോഗിച്ച് മറുപടി നൽകും!!
+When marked as AFK, any mentions will be replied to with a message to say you're not available!
 """
 
-__mod_name__ = "afk"
+__mod_name__ = "AFK"
 
 AFK_HANDLER = DisableAbleCommandHandler("afk", afk)
 AFK_REGEX_HANDLER = DisableAbleRegexHandler("(?i)brb", afk, friendly="afk")
