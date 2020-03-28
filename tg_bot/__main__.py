@@ -24,7 +24,7 @@ Habari za Saahizi {}, Mimi ni *Robot* Jinalangu ni {}! If you have any questions
 
 I'm a group manager bot maintained by [this wonderful person](tg://user?id={}). I'm built in python3, using the \
 python-telegram-bot library, and am fully [opensource](https://github.com/Jihudumie/bahalia) - you can find what makes me tick \
-[here](github.com/Jihudumie/bahalia)!
+[here](github.com/aboyhasnooname/tgbot)!
 
 Feel free to submit pull requests on github, or to contact my support group, @Huduma, with any bugs, questions \
 or feature requests you might have :)
