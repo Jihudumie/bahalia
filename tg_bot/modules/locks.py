@@ -106,7 +106,7 @@ def lock(bot: Bot, update: Update, args: List[str]) -> str:
         if len(args) >= 1:
             if args[0] in LOCK_TYPES:
                 sql.update_lock(chat.id, args[0], locked=True)
-                message.reply_text("ഞാൻ {} ലോക്ക് ചെയ്തു. അഡ്മിൻ അല്ലാത്തവർക്ക് ഇനി അയക്കുവാൻ സാധിക്കില്ല.!".format(args[0]))
+                message.reply_text("Nilifunga {} Hakuna kutuma tena kwa zisizo-admin Haiwezekani.!".format(args[0]))
 
                 return "<b>{}:</b>" \
                        "\n#LOCK" \
@@ -120,7 +120,7 @@ def lock(bot: Bot, update: Update, args: List[str]) -> str:
                     members = users_sql.get_chat_members(str(chat.id))
                     restr_members(bot, chat.id, members, messages=True, media=True, other=True)
 
-                message.reply_text("ഞാൻ {} ലോക്ക് ചെയ്തു. അഡ്മിൻ അല്ലാത്തവർക്ക് ഇനി അയക്കുവാൻ സാധിക്കില്ല.!".format(args[0]))
+                message.reply_text("Nilifunga {} Hakuna kutuma tena kwa zisizo-admin Haiwezekani.!".format(args[0]))
                 return "<b>{}:</b>" \
                        "\n#LOCK" \
                        "\n<b>Admin:</b> {}" \
@@ -128,10 +128,10 @@ def lock(bot: Bot, update: Update, args: List[str]) -> str:
                                                           mention_html(user.id, user.first_name), args[0])
 
             else:
-                message.reply_text("നിങ്ങൾ എന്താണ് ലോക്ക് ചെയ്യാൻ ശ്രമിക്കുന്നത് ...? /locktypes ലോക്ക് ടൈപ്പ് നോക്കിയിട്ട് അയക്കു..")
+                message.reply_text("Je! Unajaribu kufunga nini...? /locktypes Tafuta aina ya kufuli na utumie..")
 
     else:
-        message.reply_text("ഞാൻ ഒരു അഡ്മിനിസ്ട്രേറ്റർ അല്ല, അല്ലെങ്കിൽ എനിക്ക് ലോക്ക് ചെയ്യാൻ ഉള്ള പരിമിതികൾ തന്നിട്ടില്ല.")
+        message.reply_text("Mimi sio msimamizi, wala sipewi mipaka ya kufunga.")
 
     return ""
 
@@ -147,7 +147,7 @@ def unlock(bot: Bot, update: Update, args: List[str]) -> str:
         if len(args) >= 1:
             if args[0] in LOCK_TYPES:
                 sql.update_lock(chat.id, args[0], locked=False)
-                message.reply_text("ഞാൻ {} അൺലോക്ക് ചെയ്തിട്ടുണ്ട്. ഇനി എല്ലാവർക്കും ഇവിടെ അയക്കാം..".format(args[0]))
+                message.reply_text("Nimefungua {} Sasa kila mtu anaweza kutuma hapa..".format(args[0]))
                 return "<b>{}:</b>" \
                        "\n#UNLOCK" \
                        "\n<b>Admin:</b> {}" \
@@ -173,7 +173,7 @@ def unlock(bot: Bot, update: Update, args: List[str]) -> str:
                 elif args[0] == "all":
                     unrestr_members(bot, chat.id, members, True, True, True, True)
                 """
-                message.reply_text("ഞാൻ {} അൺലോക്ക് ചെയ്തിട്ടുണ്ട്. ഇനി എല്ലാവർക്കും ഇവിടെ അയക്കാം..".format(args[0]))
+                message.reply_text("Nimefungua {} Sasa kila mtu anaweza kutuma hapa..".format(args[0]))
 
                 return "<b>{}:</b>" \
                        "\n#UNLOCK" \
@@ -241,7 +241,7 @@ def build_lock_message(chat_id):
     locks = sql.get_locks(chat_id)
     restr = sql.get_restr(chat_id)
     if not (locks or restr):
-        res = "ഈ ചാറ്റിൽ നിലവിൽ ലോക്കുകളൊന്നുമില്ല.."
+        res = "Hivi sasa hakuna kufuli katika mazungumzo haya.."
     else:
         res = "These are the locks in this chat:"
         if locks:
@@ -289,21 +289,17 @@ def __chat_settings__(chat_id, user_id):
 
 
 __help__ = """
- - /locktypes: സാധ്യമായ ലോക്ക് ടൈപ്പുകളുടെ ഒരു പട്ടിക..
+ - /locktypes: Orodha ya Lock 🔐 Zote nilizo Nazo..
 
-*അഡ്‌മിൻ മാത്രം:*
- - /lock <type>: ഒരു പ്രത്യേക തരത്തിലുള്ള ലോക്ക് ഇനങ്ങൾ (സ്വകാര്യമായി ലഭ്യമല്ല)..
- - /unlock <type>: ഒരു പ്രത്യേക തരം ഇനങ്ങൾ അൺലോക്കുചെയ്യുക (സ്വകാര്യമായി ലഭ്യമല്ല) ..
- - /locks: ഈ ചാറ്റിലെ ലോക്കുകളുടെ നിലവിലെ പട്ടിക.
+*Viongozi tu:*
+ - /lock <type>: Aina ya Vitu vya kufunga (hazipatikani kibinafsi)..
+ - /unlock <type>: Fungua 🔓 aina ya Lock Uliyo weka (haipatikani kibinafsi) ..
+ - /locks: Orodha ya Lock au Kufuri Zinazo Fanya kazi 🔒  Nadani ya Kundi hili.
 
-ഒരു ഗ്രൂപ്പിന്റെ ഉപയോക്താക്കളെ നിയന്ത്രിക്കാൻ ലോക്കുകൾ ഉപയോഗിക്കാം. 
-ഉദാ:
-യു‌ആർ‌എൽ‌ ലോക്കുചെയ്യുന്നത് വൈറ്റ്‌ലിസ്റ്റ് ചെയ്യാത്ത url കളുള്ള എല്ലാ സന്ദേശങ്ങളും യാന്ത്രികമായി ഇല്ലാതാക്കും, 
-ലോക്കുചെയ്യുന്ന സ്റ്റിക്കറുകൾ‌ എല്ലാ സ്റ്റിക്കറുകളും ഇല്ലാതാക്കും. 
-ബോട്ടുകൾ ലോക്കുചെയ്യുന്നത് അഡ്മിൻ അല്ലാത്തവരെ ചാറ്റിലേക്ക് ബോട്ടുകൾ ചേർക്കുന്നതിൽ നിന്ന് തടയും.
+Kufuli kunaweza kutumiwa kudhibiti watumiaji wa kikundi. Kwa mfano: Kufunga URL huondoa kiotomatiki ujumbe wote na URL nyeupe. Vijiti vya kufunga vitafuta stika zote. Kufunga boti kutazuia wasiokuwa waongezi kuongeza bots kwenye gumzo.
 """
 
-__mod_name__ = "Locks"
+__mod_name__ = "Locks 🔐"
 
 LOCKTYPES_HANDLER = DisableAbleCommandHandler("locktypes", locktypes)
 LOCK_HANDLER = CommandHandler("lock", lock, pass_args=True, filters=Filters.group)
