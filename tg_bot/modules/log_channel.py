@@ -143,15 +143,16 @@ if is_module_loaded(FILENAME):
 
 
     __help__ = """
-*അഡ്‌മിൻ മാത്രം:*
-- /logchannel: ലോഗ് ചാനൽ വിവരങ്ങൾ നേടുക.
-- /setlog: ലോഗ് ചാനൽ സജ്ജമാക്കുക.
-- /unsetlog: ലോഗ് ചാനൽ സജ്ജീകരിക്കരുത്.
+*Unganisha Group Lako na Channel:*
+- /logchannel: Pata habari ya kituo cha logi.
+- /setlog: Weka kituo cha logi.
+- /unsetlog: Ondoa Muunganiko na Channel.
 
-Setting the log channel is done by:
-- adding the bot to the desired channel (as an admin!)
-- sending /setlog in the channel
-- forwarding the /setlog to the group
+Kuweka kituo cha logi hufanywa na:
+- kuongeza bot kwenye Channel unayotaka (kama admin!)
+- Tuma👉 /setlog Ndani ya channel
+- hii Command ya👉 /setlog uliyo ituma ndani ya Channel i, Forward Katika group 
+Usipo elewa Uliza @Huduma
 """
 
     __mod_name__ = "Log Channels"
