@@ -25,7 +25,7 @@ def mute(bot: Bot, update: Update, args: List[str]) -> str:
 
     user_id = extract_user(message, args)
     if not user_id:
-        message.reply_text("ഒന്നുകിൽ നിശബ്ദമാക്കുന്നതിന് നിങ്ങൾ എനിക്ക് ഒരാളെം നൽകേണ്ടതുണ്ട്, അല്ലെങ്കിൽ നിശബ്ദമാക്കാൻ ആർക്കെങ്കിലും മറുപടി നൽകണം..")
+        message.reply_text("You'll need to either give me a username to mute, or reply to someone to be muted.")
         return ""
 
     if user_id == bot.id:
@@ -40,7 +40,7 @@ def mute(bot: Bot, update: Update, args: List[str]) -> str:
 
         elif member.can_send_messages is None or member.can_send_messages:
             bot.restrict_chat_member(chat.id, user_id, can_send_messages=False)
-            message.reply_text("👍🏻 ലവന്റെ വായടച്ചിട്ടുണ്ട്! 🤐")
+            message.reply_text("Muted!")
             return "<b>{}:</b>" \
                    "\n#MUTE" \
                    "\n<b>Admin:</b> {}" \
@@ -49,9 +49,9 @@ def mute(bot: Bot, update: Update, args: List[str]) -> str:
                                               mention_html(member.user.id, member.user.first_name))
 
         else:
-            message.reply_text("മിണ്ടാതിരിക്കടേ :rage:!")
+            message.reply_text("This user is already muted!")
     else:
-        message.reply_text("അളിയാ അയാൾ ഇവിടെ ഇല്ല:cry:")
+        message.reply_text("This user isn't in the chat!")
 
     return ""
 
@@ -67,28 +67,34 @@ def unmute(bot: Bot, update: Update, args: List[str]) -> str:
 
     user_id = extract_user(message, args)
     if not user_id:
-        message.reply_text("ഒന്നുകിൽ നിങ്ങൾ ശബ്‌ദമുള്ളതാക്കാൻ എനിക്ക് ഒരു ഉപയോക്തൃനാമം നൽകേണ്ടതുണ്ട്, അല്ലെങ്കിൽ നിശബ്ദമാക്കുന്നതിന് മറ്റൊരാൾക്ക് മറുപടി നൽകണം..")
+        message.reply_text("You'll need to either give me a username to unmute, or reply to someone to be unmuted.")
         return ""
 
     member = chat.get_member(int(user_id))
 
-    if member.status != 'kicked' and member.status != 'left':
-        if member.can_send_messages and member.can_send_media_messages \
-                and member.can_send_other_messages and member.can_add_web_page_previews:
-            message.reply_text("ഇനി അയാൾക്ക് വാ തുറക്കാം :+1:.")
-        else:
-            bot.restrict_chat_member(chat.id, int(user_id),
-                                     can_send_messages=True,
-                                     can_send_media_messages=True,
-                                     can_send_other_messages=True,
-                                     can_add_web_page_previews=True)
-            message.reply_text("Unmuted!")
-            return "<b>{}:</b>" \
-                   "\n#UNMUTE" \
-                   "\n<b>Admin:</b> {}" \
-                   "\n<b>User:</b> {}".format(html.escape(chat.title),
-                                              mention_html(user.id, user.first_name),
-                                              mention_html(member.user.id, member.user.first_name))
+    if member:
+        if is_user_admin(chat, user_id, member=member):
+            message.reply_text("This is an admin, what do you expect me to do?")
+            return ""
+
+        elif member.status != 'kicked' and member.status != 'left':
+            if member.can_send_messages and member.can_send_media_messages \
+                    and member.can_send_other_messages and member.can_add_web_page_previews:
+                message.reply_text("This user already has the right to speak.")
+                return ""
+            else:
+                bot.restrict_chat_member(chat.id, int(user_id),
+                                         can_send_messages=True,
+                                         can_send_media_messages=True,
+                                         can_send_other_messages=True,
+                                         can_add_web_page_previews=True)
+                message.reply_text("Unmuted!")
+                return "<b>{}:</b>" \
+                       "\n#UNMUTE" \
+                       "\n<b>Admin:</b> {}" \
+                       "\n<b>User:</b> {}".format(html.escape(chat.title),
+                                                  mention_html(user.id, user.first_name),
+                                                  mention_html(member.user.id, member.user.first_name))
     else:
         message.reply_text("This user isn't even in the chat, unmuting them won't make them talk more than they "
                            "already do!")
@@ -158,7 +164,7 @@ def temp_mute(bot: Bot, update: Update, args: List[str]) -> str:
     try:
         if member.can_send_messages is None or member.can_send_messages:
             bot.restrict_chat_member(chat.id, user_id, until_date=mutetime, can_send_messages=False)
-            message.reply_text("കുറച്ചുനേരം മിണ്ടാതിരിക്ക്! 😠 Muted for {}!".format(time_val))
+            message.reply_text("Muted for {}!".format(time_val))
             return log
         else:
             message.reply_text("This user is already muted.")
@@ -166,7 +172,7 @@ def temp_mute(bot: Bot, update: Update, args: List[str]) -> str:
     except BadRequest as excp:
         if excp.message == "Reply message not found":
             # Do not reply
-            message.reply_text("കുറച്ചുനേരം മിണ്ടാതിരിക്ക്! 😠 Muted for {}!".format(time_val), quote=False)
+            message.reply_text("Muted for {}!".format(time_val), quote=False)
             return log
         else:
             LOGGER.warning(update)
@@ -179,12 +185,12 @@ def temp_mute(bot: Bot, update: Update, args: List[str]) -> str:
 
 __help__ = """
 *Admin only:*
- - /mute <userhandle>: ഒരു ഉപയോക്താവിനെ നിശബ്ദമാക്കുന്നു. ഉപയോക്താവിനുള്ള മറുപടി നിശബ്ദമാക്കി ഒരു മറുപടിയായി ഉപയോഗിക്കാനും കഴിയും.
- - /tmute <userhandle> x(m/h/d):x സമയത്തേക്ക് ഒരു ഉപയോക്താവിനെ നിശബ്ദമാക്കുന്നു. (ഹാൻഡിൽ വഴി അല്ലെങ്കിൽ മറുപടി വഴി). m = മിനിറ്റ്, h = മണിക്കൂർ, d = ദിവസം.
- - /unmute <userhandle>: ഒരു ഉപയോക്താവിനെ നിശബ്ദമാക്കുന്നു. ഉപയോക്താവിനുള്ള മറുപടി നിശബ്ദമാക്കി ഒരു മറുപടിയായി ഉപയോഗിക്കാനും കഴിയും.
+ - /mute <userhandle>: silences a user. Can also be used as a reply, muting the replied to user.
+ - /tmute <userhandle> x(m/h/d): mutes a user for x time. (via handle, or reply). m = minutes, h = hours, d = days.
+ - /unmute <userhandle>: unmutes a user. Can also be used as a reply, muting the replied to user.
 """
 
-__mod_name__ = "mute"
+__mod_name__ = "Muting"
 
 MUTE_HANDLER = CommandHandler("mute", mute, pass_args=True, filters=Filters.group)
 UNMUTE_HANDLER = CommandHandler("unmute", unmute, pass_args=True, filters=Filters.group)
