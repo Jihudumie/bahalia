@@ -18,27 +18,27 @@ def show_url(bot, update, args):
         link_processed = parse(tg_feed_link)
 
         if link_processed.bozo == 0:
-            feed_description = link_processed.feed.get("description", default="Unknown")
-            feed_description = "<i>{}</i>".format(
-                re.sub('<[^<]+?>', '', link_processed.feed.get("description", default="Unknown")))
+            feed_content = link_processed.feed.get("content", default="Unknown")
+            feed_content = "<i>{}</i>".format(
+                re.sub('<[^<]+?>', '', link_processed.feed.get("content", default="Unknown")))
             feed_link = link_processed.feed.get("link", default="Unknown")
 
-            feed_message = "<b>Feed description:</b> \n{}" \
-                           "\n\n<b>Feed Description:</b> \n{}" \
-                           "\n\n<b>Feed Link:</b> \n{}".format(html.escape(feed_description),
-                                                               feed_description,
+            feed_message = "<b>Feed content:</b> \n{}" \
+                           "\n\n<b>Feed content:</b> \n{}" \
+                           "\n\n<b>Feed Link:</b> \n{}".format(html.escape(feed_content),
+                                                               feed_content,
                                                                html.escape(feed_link))
 
             if len(link_processed.entries) >= 1:
-                entry_description = link_processed.entries[0].get("description", default="Unknown")
-                entry_description = "<i>{}</i>".format(
-                    re.sub('<[^<]+?>', '', link_processed.entries[0].get("description", default="Unknown")))
+                entry_content = link_processed.entries[0].get("content", default="Unknown")
+                entry_content = "<i>{}</i>".format(
+                    re.sub('<[^<]+?>', '', link_processed.entries[0].get("content", default="Unknown")))
                 entry_link = link_processed.entries[0].get("link", default="Unknown")
 
-                entry_message = "\n\n<b>Entry description:</b> \n{}" \
-                                "\n\n<b>Entry Description:</b> \n{}" \
-                                "\n\n<b>Entry Link:</b> \n{}".format(html.escape(entry_description),
-                                                                     entry_description,
+                entry_message = "\n\n<b>Entry content:</b> \n{}" \
+                                "\n\n<b>Entry content:</b> \n{}" \
+                                "\n\n<b>Entry Link:</b> \n{}".format(html.escape(entry_content),
+                                                                     entry_content,
                                                                      html.escape(entry_link))
                 final_message = feed_message + entry_message
 
@@ -143,14 +143,14 @@ def rss_update(bot, job):
         tg_old_entry_link = row.old_entry_link
 
         new_entry_links = []
-        new_entry_descriptions = []
+        new_entry_contents = []
 
         # this loop checks for every entry from the RSS Feed link from the DB row
         for entry in feed_processed.entries:
             # check if there are any new updates to the RSS Feed from the old entry
             if entry.link != tg_old_entry_link:
                 new_entry_links.append(entry.link)
-                new_entry_descriptions.append(entry.description)
+                new_entry_contents.append(entry.content)
             else:
                 break
 
@@ -162,8 +162,8 @@ def rss_update(bot, job):
 
         if len(new_entry_links) < 100:
             # this loop sends every new update to each user from each group based on the DB entries
-            for link, description in zip(reversed(new_entry_links), reversed(new_entry_descriptions)):
-                final_message = "<b>{}</b>\n\n{}".format(html.escape(description), html.escape(link))
+            for link, content in zip(reversed(new_entry_links), reversed(new_entry_contents)):
+                final_message = "<b>{}</b>\n\n{}".format(html.escape(content), html.escape(link))
 
                 if len(final_message) <= constants.MAX_MESSAGE_LENGTH:
                     bot.send_message(chat_id=tg_chat_id, text=final_message, parse_mode=ParseMode.HTML)
@@ -171,8 +171,8 @@ def rss_update(bot, job):
                     bot.send_message(chat_id=tg_chat_id, text="<b>Warning:</b> The message is too long to be sent",
                                      parse_mode=ParseMode.HTML)
         else:
-            for link, description in zip(reversed(new_entry_links[-100:]), reversed(new_entry_descriptions[-100:])):
-                final_message = "<b>{}</b>\n\n{}".format(html.escape(description), html.escape(link))
+            for link, content in zip(reversed(new_entry_links[-100:]), reversed(new_entry_contents[-100:])):
+                final_message = "<b>{}</b>\n\n{}".format(html.escape(content), html.escape(link))
 
                 if len(final_message) <= constants.MAX_MESSAGE_LENGTH:
                     bot.send_message(chat_id=tg_chat_id, text=final_message, parse_mode=ParseMode.HTML)
@@ -197,14 +197,14 @@ def rss_set(bot, job):
         feed_processed = parse(tg_feed_link)
 
         new_entry_links = []
-        new_entry_descriptions = []
+        new_entry_contents = []
 
         # this loop checks for every entry from the RSS Feed link from the DB row
         for entry in feed_processed.entries:
             # check if there are any new updates to the RSS Feed from the old entry
             if entry.link != tg_old_entry_link:
                 new_entry_links.append(entry.link)
-                new_entry_descriptions.append(entry.description)
+                new_entry_contents.append(entry.content)
             else:
                 break
 
