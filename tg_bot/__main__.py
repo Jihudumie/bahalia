@@ -29,7 +29,6 @@ Feel free to submit pull requests on github, or to contact my support group, @Hu
 or feature requests you might have :)
 I also have a news channel, [HabariTz 🇹🇿](https://t.me/HabariTz) for announcements on new features, downtime, etc.
 
-You can find the list of available commands with /help.
 
 If you're enjoying using me, and/or would like to help me survive in the wild, hit /donate to help fund/upgrade my VPS!
 """
