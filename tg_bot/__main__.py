@@ -30,7 +30,7 @@ or feature requests you might have :)
 Kwa habari Mbali Mbali itakubidi utembelee channel,👉[HabariTz 🇹🇿](https://t.me/HabariTz).
 
 
-If you're enjoying using me, and/or would like to help me survive in the wild, hit /donate to help fund/upgrade my VPS!
+If you're enjoying using me, and/or would like to help me survive in the wild, hit /dw to help fund/upgrade my VPS!
 """
 
 HELP_STRINGS = """
@@ -44,7 +44,7 @@ Ninayo weza kufanya ndani ya group lako.
  - /start: start the bot
  - /help: PM's you this message.
  - /help <module name>: PM's you info about that module.
- - /donate: information about how to donate!
+ - /dw: information about how to donate!
  - /settings:
    - in PM: will send you your settings for all supported modules.
    - in a group: will redirect you to pm, with all that chat's settings.
@@ -377,7 +377,7 @@ def get_settings(bot: Bot, update: Update):
 
 
 @run_async
-def donate(bot: Bot, update: Update):
+def dw(bot: Bot, update: Update):
     user = update.effective_message.from_user
     chat = update.effective_chat  # type: Optional[Chat]
 
@@ -427,7 +427,7 @@ def main():
     settings_handler = CommandHandler("settings", get_settings)
     settings_callback_handler = CallbackQueryHandler(settings_button, pattern=r"stngs_")
 
-    donate_handler = CommandHandler("donate", donate)
+    dw_handler = CommandHandler("dw", donate)
     migrate_handler = MessageHandler(Filters.status_update.migrate, migrate_chats)
 
     # dispatcher.add_handler(test_handler)
@@ -437,7 +437,7 @@ def main():
     dispatcher.add_handler(help_callback_handler)
     dispatcher.add_handler(settings_callback_handler)
     dispatcher.add_handler(migrate_handler)
-    dispatcher.add_handler(donate_handler)
+    dispatcher.add_handler(dw_handler)
 
     # dispatcher.add_error_handler(error_callback)
 
