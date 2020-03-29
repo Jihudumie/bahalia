@@ -21,13 +21,13 @@ from tg_bot.modules.helper_funcs.misc import paginate_modules
 PM_START_TEXT = """
 Habari yako {}, Mimi ni Robot Jinalangu ni {}! Kupata Menu zote, Gusa hapo 👉 /help - *Karibu👇 group*  \n\n[DW Kiswahili](https://t.me/Dw_swahili)
 
-I'm a group manager bot maintained by [this wonderful person](tg://user?id={}). I'm built in python3, using the 
-python-telegram-bot library, and am fully [opensource](https://t.me/Twuwbaa) - you can find what makes me tick 
+I'm a group manager bot maintained by [this wonderful person](tg://user?id={}). I'm built in python3, using the \
+python-telegram-bot library, and am fully [opensource](https://t.me/@Dw_swahili).
 [here](github.com/Jihudumie/bahalia)!
 
 Feel free to submit pull requests on github, or to contact my support group, @Huduma, with any bugs, questions \
 or feature requests you might have :)
-I also have a news channel, [HabariTz 🇹🇿](https://t.me/HabariTz) for announcements on new features, downtime, etc.
+Kwa habari Mbali Mbali itakubidi utembelee channel,👉[HabariTz 🇹🇿](https://t.me/HabariTz).
 
 
 If you're enjoying using me, and/or would like to help me survive in the wild, hit /donate to help fund/upgrade my VPS!
