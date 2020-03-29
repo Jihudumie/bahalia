@@ -22,7 +22,7 @@ PM_START_TEXT = """
 Habari yako {}, Mimi ni Robot Jinalangu ni {}! Kupata Menu zote, Gusa hapo 👉 /help - *Karibu👇 group*  \n\n[DW Kiswahili](https://t.me/Dw_swahili)
 
 I'm a group manager bot maintained by [this wonderful person](tg://user?id={}). I'm built in python3, using the 
-python-telegram-bot library, and am fully [opensource](https://t.me/Twuwbaa) - you can find what makes me tick \
+python-telegram-bot library, and am fully [opensource](https://t.me/Twuwbaa) - you can find what makes me tick 
 [here](github.com/Jihudumie/bahalia)!
 
 Feel free to submit pull requests on github, or to contact my support group, @Huduma, with any bugs, questions \
