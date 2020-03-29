@@ -53,7 +53,7 @@
     },
     "DONATION_LINK": {
       "description": "Optional: link where you would like to receive donations.",
-      "value": "https://www.paypal.me/Your_id_here"
+      "value": "http://t.me/Khamis_sBot"
     },
     "PORT": {
       "description": "Port to use for your webhooks",
