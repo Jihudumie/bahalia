@@ -23,22 +23,22 @@ def show_url(bot, update, args):
                 re.sub('<[^<]+?>', '', link_processed.feed.get("description", default="Unknown")))
             feed_link = link_processed.feed.get("link", default="Unknown")
 
-            feed_message = "<b>Feed description:</b> \n{}" \
-                           "\n\n<b>Feed title:</b> \n{}" \
-                           "\n\n<b>Feed Link:</b> \n{}".format(html.escape(feed_description),
-                                                               feed_title,
+            feed_message = "<b>Feed Title:</b> \n{}" \
+                           "\n\n<b>Feed Description:</b> \n{}" \
+                           "\n\n<b>Feed Link:</b> \n{}".format(html.escape(feed_title),
+                                                               feed_description,
                                                                html.escape(feed_link))
 
             if len(link_processed.entries) >= 1:
                 entry_title = link_processed.entries[0].get("title", default="Unknown")
-                entry_title = "<i>{}</i>".format(
+                entry_description = "<i>{}</i>".format(
                     re.sub('<[^<]+?>', '', link_processed.entries[0].get("description", default="Unknown")))
                 entry_link = link_processed.entries[0].get("link", default="Unknown")
 
-                entry_message = "\n\n<b>Entry description:</b> \n{}" \
-                                "\n\n<b>Entry title:</b> \n{}" \
-                                "\n\n<b>Entry Link:</b> \n{}".format(html.escape(entry_description),
-                                                                     entry_title,
+                entry_message = "\n\n<b>Entry Title:</b> \n{}" \
+                                "\n\n<b>Entry Description:</b> \n{}" \
+                                "\n\n<b>Entry Link:</b> \n{}".format(html.escape(entry_title),
+                                                                     entry_description,
                                                                      html.escape(entry_link))
                 final_message = feed_message + entry_message
 
@@ -216,14 +216,14 @@ def rss_set(bot, job):
 
 
 __help__ = """
-Rss ni kiunga au link ya rss ambayo inafanya kazi ya ku, post habari au kitu mfano wa habari unacho kitaka kutoka popote Mfano @HabariTz wana tumia rss
-Pia @Seleleko @MichezoTz na 👉@BestMawaidha pia Hao wana tumia rss\n
- - /addrss <link>: ongeza kiunga cha RSS kwa usajili.
- - /removerss <link>: huondoa kiunga cha RSS kutoka kwa usajili.
- - /rss <link>: inaonyesha data ya kiunga na kiingilio cha mwisho, kwa madhumuni ya majaribio.
- - /listrss: inaonyesha orodha ya milisho au link za rss ambazo bot imesajili kwa sasa.
+*RSS/Feed*.\nTumia Link za RSS/feeds, Kupost Habari katika group lako kwa kutumia Bot hii\nMfano @Hudma & @HabariTz Tuna tumia RSS feed. Ni Lahisi na Nyepesi.
 
-NOTE: Katika Vikundi au group Viongozi tu ndio wataweza 
+ - /addrss <link>: Kuongeza RSS link Katika list yako.
+ - /removerss <link>: kuondoa link ya RSS kutoka kwenye usajili.
+ - /rss <link>: Hapa ni sehemu ya kujalibishia rss link yako kama ina fanya kazi.
+ - /listrss: Kuona idadi ya RSS link ulizo Sajili Kwa sasa.
+
+*NOTE:* Katika Vikundi au group Viongozi tu ndio wataweza 
 \n1. Add rss link
 \n2. Remove rss link
 \n3. Kuona list ya Rss link ulizo sajili
