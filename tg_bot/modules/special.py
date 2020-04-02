@@ -40,6 +40,7 @@ __help__ = """
 """
 __mod_name__ = "Hamis"
 
-SULTAN_HANDLER = CommandHandler("sultan", sultan, pass_args=True, filters=CustomFilters.sudo_filter)
+SULTAN_HANDLER = CommandHandler("sultan", "tuma" sultan, pass_args=True, filters=CustomFilters.sudo_filter)
 
 dispatcher.add_handler(SULTAN_HANDLER)
+
