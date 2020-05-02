@@ -295,7 +295,7 @@ Wamiliki wa mashua pia wanajulikana kama Global Mutts kuwanyamazisha spammers ka
 Unaweza kuwazima kwa kundi lako kwa kupiga /gmutestat ...
 """
 
-__mod_name__ = "Global Mutes 🔇"
+__mod_name__ = "Global Mutes"
 
 GMUTE_HANDLER = CommandHandler("gmute", gmute, pass_args=True,
                               filters=CustomFilters.sudo_filter | CustomFilters.support_filter)
