@@ -399,6 +399,7 @@ def stats(bot: Bot, update: Update):
 
 # /ip is for private use
 __help__ = """
+☛@Huduma
  - /id: get the current group id. If used by replying to a message, gets that user's id.
  - /rmkeyboard: Husaidia wewe kuondoa kibodi za bot kutoka mazungumzo ...
  - /runs: reply a random string from an array of replies.
