@@ -19,31 +19,32 @@ from tg_bot.modules.helper_funcs.chat_status import is_user_admin
 from tg_bot.modules.helper_funcs.misc import paginate_modules
 
 PM_START_TEXT = """
-Hi {}, my name is {}! If you have any questions on how to use me, read /help - and then head to @Huduma.
+Habari yako {}, Mimi ni Robot Jinalangu ni {}! Kupata Menu zote, Gusa hapo 👉 /help - *Karibu👇 group*  \n\n[DW Kiswahili](https://t.me/Dw_swahili)
 
 I'm a group manager bot maintained by [this wonderful person](tg://user?id={}). I'm built in python3, using the \
-python-telegram-bot library, and am fully [opensource](https://t.me/Twuwbaa) - you can find what makes me tick \
-[here](https://t.me/Twuwbaa)!
+python-telegram-bot library, and am fully [opensource](https://t.me/@Dw_swahili).
+[here](github.com/Jihudumie/bahalia)!
 
 Feel free to submit pull requests on github, or to contact my support group, @Huduma, with any bugs, questions \
 or feature requests you might have :)
-I also have a news channel, @HabariTz for announcements on new features, downtime, etc.
+Kwa habari Mbali Mbali itakubidi utembelee channel,👉[HabariTz 🇹🇿](https://t.me/HabariTz).
 
-You can find the list of available commands with /help.
 
-If you're enjoying using me, and/or would like to help me survive in the wild, hit /Khamis to help fund/upgrade my VPS!
+If you're enjoying using me, and/or would like to help me survive in the wild, hit /dw to help fund/upgrade my VPS!
 """
 
 HELP_STRINGS = """
-Hey there! My name is *{}*.
-I'm a modular group management bot with a few fun extras! Have a look at the following for an idea of some of \
-the things I can help you with.
+Habari yako! Jina langu ni *{}*.
+Mimi ni Robot Alhamdulillah nina uwezo Mkubwa wa kukusaidia 
+Kusimamia gunzo (group) au kikundi chako Hapa Telegram!
+ Angalia yafuatayo 👇. \
+Ninayo weza kufanya ndani ya group lako.
 
-*Main* commands available:
+*Amri* kuu za kuanzia Kutumia:
  - /start: start the bot
  - /help: PM's you this message.
  - /help <module name>: PM's you info about that module.
- - /Khamis: *Amani ya Allah Iwe nawe Karibu tuongee!*
+ - /khamis: *Maelezo Kuhusu Utengenezaji!*
  - /settings:
    - in PM: will send you your settings for all supported modules.
    - in a group: will redirect you to pm, with all that chat's settings.
@@ -52,9 +53,10 @@ the things I can help you with.
 And the following:
 """.format(dispatcher.bot.first_name, "" if not ALLOW_EXCL else "\nAmri au Command zote zinaAnza na Alama hii👉 / au !.\n")
 
-DONATE_STRING = """Amani Iwe nawe. Kama una hitaji Robot Kama Hili kwa Ajili ya Group Lako Karibu tuongee 
-[Khamis](https://t.me/Twuwbaa)
-Natumia Furusa Hii kukukalibisha Katika Kikundi Chetu cha @Huduma"""
+DONATE_STRING = """*Assalaam Aleykum* Habaari za Saahizi, Hii nisehemu inayo husu Utengenezaji [my creator](t.me/Twuwbaa).\
+
+Khamis Au Hamis Nimtengenezaji Wa Marobot Hapa Telegram Kama una hitaji Kutengenezewa Robot Kama hili onana na Mimia au nitafute Katika @Huduma
+"""
 
 IMPORTED = {}
 MIGRATEABLE = []
