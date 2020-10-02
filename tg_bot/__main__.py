@@ -19,32 +19,30 @@ from tg_bot.modules.helper_funcs.chat_status import is_user_admin
 from tg_bot.modules.helper_funcs.misc import paginate_modules
 
 PM_START_TEXT = """
-Habari yako {}, Mimi ni Robot Jinalangu ni {}! Kupata Menu zote, Gusa hapo 👉 /help - *Karibu👇 group*  \n\n[DW Kiswahili](https://t.me/Dw_swahili)
+    بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ\n\n *Assalaam Aleykum Warhmatullah Wabarakaatuh.* {}, Mimi ni *Robot* Jina langu ni {}! \n\n*Kupata Menu zangu zoote, Gusa hapa ➠* /help - Au Tuulize kupitia @ViongoziBot 👈
 
 I'm a group manager bot maintained by [this wonderful person](tg://user?id={}). I'm built in python3, using the \
-python-telegram-bot library, and am fully [opensource](https://t.me/@Dw_swahili).
-[here](github.com/Jihudumie/bahalia)!
+python-telegram-bot library, and am fully [opensource](https://t.me/Hamisbot) - you can find what makes me tick \
+[here](github.com/aboyhasnooname/tgbot)!
 
-Feel free to submit pull requests on github, or to contact my support group, @Huduma, with any bugs, questions \
+Feel free to submit pull requests on github, or to contact my, @ViongoziBot, with any bugs, questions \
 or feature requests you might have :)
-Kwa habari Mbali Mbali itakubidi utembelee channel,👉[HabariTz 🇹🇿](https://t.me/HabariTz).
+*Karibu Katika channel Yangu,* \n➠ [Home Islamu](https://t.me/homeislamu) *Kwa Darsa Za kila Siku*
+\n➠ [List Ya Channel Na Bot Za Ki, Islamu](https://telegra.ph/List-Ya-Channel-Za-Ki-Islamu-04-30) ⛶
 
-
-If you're enjoying using me, and/or would like to help me survive in the wild, hit /dw to help fund/upgrade my VPS!
+You can find the list of available commands with /help.
+If you're enjoying using me, and/or would like to help me survive in the wild, hit /khamis to help fund/upgrade my VPS!
 """
 
 HELP_STRINGS = """
-Habari yako! Jina langu ni *{}*.
-Mimi ni Robot Alhamdulillah nina uwezo Mkubwa wa kukusaidia 
-Kusimamia gunzo (group) au kikundi chako Hapa Telegram!
- Angalia yafuatayo 👇. \
-Ninayo weza kufanya ndani ya group lako.
+Karibu Katika *Menu* Zangu Mimi *{}*.
+Angalia yafuatayo 👇 kwanza baadhi ya mambo ambayo ninaweza kukusaidia katika Group Lako 🤝. \
 
-*Amri* kuu za kuanzia Kutumia:
+*Amri kuu za kuanzia Kutumia:*
  - /start: start the bot
  - /help: PM's you this message.
  - /help <module name>: PM's you info about that module.
- - /khamis: *Maelezo Kuhusu Utengenezaji!*
+ - /khamis: __Ongea Na Aliye Tengeneza Bot__!
  - /settings:
    - in PM: will send you your settings for all supported modules.
    - in a group: will redirect you to pm, with all that chat's settings.
@@ -53,10 +51,10 @@ Ninayo weza kufanya ndani ya group lako.
 And the following:
 """.format(dispatcher.bot.first_name, "" if not ALLOW_EXCL else "\nAmri au Command zote zinaAnza na Alama hii👉 / au !.\n")
 
-DONATE_STRING = """*Assalaam Aleykum* Habaari za Saahizi, Hii nisehemu inayo husu Utengenezaji [my creator](t.me/Twuwbaa).\
-
-Khamis Au Hamis Nimtengenezaji Wa Marobot Hapa Telegram Kama una hitaji Kutengenezewa Robot Kama hili onana na Mimia au nitafute Katika @Huduma
-"""
+DONATE_STRING = """Assalaam Aleykum Warahmatullah Wabarakaatuh \nAlhamdulillah Nimetegeneza Bot hili La @UqabBot
+Kwa Ajili ya Magroup, Vikundi Vya Waislam Hapa Telegram
+Robot Huyu Anatumika Katika Vikundi vya Ummah na Binafsi
+Ongea Na mimi kupitia Hapa\n     👇 \n➠[Khamis](https://t.me/KhamissBot)."""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -376,7 +374,7 @@ def get_settings(bot: Bot, update: Update):
 
 
 @run_async
-def donate(bot: Bot, update: Update):
+def khamis(bot: Bot, update: Update):
     user = update.effective_message.from_user
     chat = update.effective_chat  # type: Optional[Chat]
 
@@ -426,7 +424,7 @@ def main():
     settings_handler = CommandHandler("settings", get_settings)
     settings_callback_handler = CallbackQueryHandler(settings_button, pattern=r"stngs_")
 
-    khamis_handler = CommandHandler("khamis", donate)
+    khamis_handler = CommandHandler("khamis", khamis)
     migrate_handler = MessageHandler(Filters.status_update.migrate, migrate_chats)
 
     # dispatcher.add_handler(test_handler)
