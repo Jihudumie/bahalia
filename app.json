@@ -25,7 +25,7 @@
     },
     "OWNER_USERNAME": {
       "description": "Your username",
-      "value": "kizazi"
+      "value": "KhamissBot"
     },
     "WEBHOOK": {
       "description": "Setting this to ANYTHING will enable webhooks when in env mode messages",
@@ -41,19 +41,19 @@
     },
     "SUDO_USERS": {
       "description": "A space separated list of user_ids which should be considered sudo users",
-      "value": "592800547 654648997 183775654"
+      "value": "254318997 683538773 570400686 466337795"
     },
     "SUPPORT_USERS": {
       "description": "A space separated list of user_ids which should be considered support users (can gban/ungban, nothing else)",
-      "value": "592800547 654648997 183775654"
+      "value": "254318997 683538773 570400686 466337795"
     },
     "WHITELIST_USERS": {
       "description": "A space separated list of user_ids which should be considered whitelisted - they can't be banned.",
-      "value": "592800547 654648997 183775654"
+      "value": "254318997 683538773 570400686 466337795"
     },
     "DONATION_LINK": {
       "description": "Optional: link where you would like to receive donations.",
-      "value": "http://t.me/Khamis_sBot"
+      "value": "https://t.me/KhamissBot"
     },
     "PORT": {
       "description": "Port to use for your webhooks",
@@ -74,12 +74,7 @@
     "BAN_STICKER": {
       "description": "Which sticker to use when banning people. Use https://telegram.dog/ShowJsonBot to get the file_id",
       "value": "CAADBQADNwEAAjZzSxRZAc49mnFSSAI"
-    },
-    "CHAT_BASE_TOKEN": {
-      "description": "Your chat base token, as a string.",
-      "value": "eyf2c2c924-e63e-4178-8012-587a0697002b"
     }
-
   },
   "addons": [
     {
